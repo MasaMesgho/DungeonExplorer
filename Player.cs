@@ -7,11 +7,16 @@ namespace DungeonExplorer
         public string Name { get; private set; }
         public int Health { get; private set; }
         private Dictionary <string,int> inventory = new Dictionary<string,int>();
+        
+        
 
         public Player(string name) 
         {
             Name = name;
             Health = 100;
+
+            inventory.Add("Sword", 1);
+            inventory.Add("Potion", 1);
         }
         public void PickUpItem(string item)
         {
@@ -29,7 +34,7 @@ namespace DungeonExplorer
             string outputString = "";
             foreach (var i in this.inventory)
             {
-                string tempString = i.Value+" x " + i.Key;
+                string tempString = i.Value + " x " + i.Key + "\n" ;
                 outputString += tempString;
             }
             if (outputString == "") { outputString = "Empty"; }
