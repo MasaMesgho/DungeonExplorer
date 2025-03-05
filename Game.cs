@@ -14,7 +14,7 @@ namespace DungeonExplorer
 
         public Game()
         {
-            // Initialize the game with one room and one player
+            // Initialize the game with one room and one player after getting their name
             currentRoom = new Room(0);
             Console.Write("Please Enter your name: ");
             string name = Console.ReadLine();
@@ -22,18 +22,23 @@ namespace DungeonExplorer
         }
         public void Start()
         {
-            // Change the playing logic into true and populate the while loop
+            // uses a boolean variable to initialize the loop
             bool playing = true;
+            // loops while the game is running
             while (playing)
             {
-                // Code your playing logic here
+                // First gets and writes the description of the room
                 Console.WriteLine(currentRoom.getDescription());
+                // lets the user know their commands
                 Console.WriteLine("The commands are: left, forward, right, inventory, health, search, exit");
+                // use a while loop to get input from a user until a moving or exit command is used.
                 bool moving = false;
                 while (!moving)
                 {
+                    // gets the user input and passes it to the action method below
                     string userInput = Console.ReadLine();
                     string result = action(userInput.ToLower());
+                    // once the result of the actionn has been gotten, confirm if they are moving to a new room or exiting the game.
                     switch (result)
                     {
                         case "false":
@@ -53,6 +58,7 @@ namespace DungeonExplorer
 
         private string action(string userInput)
         {
+            // gets the user input from the main game loop and translates it to a action to be passed back to the main game loop.
             string output = "false";
             switch (userInput)
             {
@@ -101,6 +107,7 @@ namespace DungeonExplorer
                     break;
 
                 default:
+                    // if the user enters an unkown command lets them know so they can enter a new one.
                     Console.WriteLine("Command not recognised");
                     break;
             }
