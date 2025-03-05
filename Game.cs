@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Media;
 using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 
 
 //wow, much comment, very cool
@@ -13,16 +14,28 @@ namespace DungeonExplorer
         private Player player;
         private Room currentRoom = new Room(0);
 
+
+        public Items Sword;
+        public Items Potion;
         public Game()
         {
             // Initialize the game with one room and one player
+            Console.WriteLine("Please Enter your name");
+            string name = Console.ReadLine();
+            player = new Player(name);
+
+            //Initalize items
+            Sword = new Items("Sword");
+            Potion = new Items("Potion");
+
+            player.inventory.Add(Sword, 1);
+            player.inventory.Add(Potion, 1);
         }
         public void Start()
         {
-            string name;
-            Console.WriteLine("Please Enter your name");
-            name = Console.ReadLine();
-            player = new Player(name);
+
+
+            
             // Change the playing logic into true and populate the while loop
             bool playing = true;
             while (playing)
@@ -65,7 +78,7 @@ namespace DungeonExplorer
                             waitingInput = false;
                             break;
 
-                        case "search":
+                        /* case "search":
                             string contents = currentRoom.getItem();
                             if (contents=="None")
                             {
@@ -81,6 +94,7 @@ namespace DungeonExplorer
                                 player.PickUpItem(contents);
                             }
                             break;
+                        */
 
                         default:
                             Console.WriteLine("Command not recognised");
