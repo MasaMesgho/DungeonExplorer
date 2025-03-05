@@ -5,6 +5,8 @@ namespace DungeonExplorer
 {
     public class Room
     {
+        // this class contains all information and actions for rooms
+        // needed variables are below with a rng generator (rnd)
         private string description;
         private int roomID;
         private string item;
@@ -13,9 +15,13 @@ namespace DungeonExplorer
 
         public Room(int roomID = 5)
         {
+            // initializes the room
+            // generates a random room ID if one is not specified
             if (roomID == 5) { this.roomID = rnd.Next(1, 4); }
+            // uses the set description and set item methods
             setDescription();
             setItem();
+            // sets this room to not have been searched.
             this.roomChecked = false;
 
         }

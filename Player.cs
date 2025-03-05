@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 
 namespace DungeonExplorer
 {
@@ -26,13 +27,20 @@ namespace DungeonExplorer
         }
         public string InventoryContents()
         {
-            string outputString = "";
-            foreach (var i in this.inventory)
+            string outputString;
+            if (this.inventory.Count != 0)
             {
-                string tempString = i.Value+" x " + i.Key;
-                outputString += tempString;
+                outputString = "";
+                foreach (var i in this.inventory)
+                {
+                    string tempString = i.Value + " x " + i.Key+"\n";
+                    outputString += tempString;
+                }
             }
-            if (outputString == "") { outputString = "Empty"; }
+            else
+            {
+                outputString = "Empty";
+            }
             return outputString;
         }
     }

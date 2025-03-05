@@ -10,7 +10,7 @@ namespace DungeonExplorer
     internal class Game
     {
         public Random rnd = new Random();
-        private Player player;
+        public Player player;
         private Room currentRoom = new Room(0);
 
         public Game()
