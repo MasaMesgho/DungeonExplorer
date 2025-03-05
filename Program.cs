@@ -8,8 +8,10 @@ namespace DungeonExplorer
 {
     internal class Program
     {
+        // this is where the core program branches from
         static void Main(string[] args)
         {
+            // starts the game loop
             Game game = new Game();
             game.Start();
         }
