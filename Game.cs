@@ -3,7 +3,6 @@ using System.Media;
 using System.Runtime.CompilerServices;
 
 
-//wow, much comment, very cool
 
 namespace DungeonExplorer
 {
