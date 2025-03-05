@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
@@ -6,14 +7,20 @@ namespace DungeonExplorer
     {
         public string Name { get; private set; }
         public int Health { get; private set; }
-        private Dictionary <string,int> inventory = new Dictionary<string,int>();
+
+
+        public Dictionary <Items,int> inventory = new Dictionary<Items,int>();
+        
+        
 
         public Player(string name) 
         {
             Name = name;
             Health = 100;
+
+
         }
-        public void PickUpItem(string item)
+        public void PickUpItem(Items item)
         {
             if (this.inventory.ContainsKey(item))
             {
@@ -29,7 +36,7 @@ namespace DungeonExplorer
             string outputString = "";
             foreach (var i in this.inventory)
             {
-                string tempString = i.Value+" x " + i.Key;
+                string tempString = i.Value + " x " + i.Key.Name + "\n" ;
                 outputString += tempString;
             }
             if (outputString == "") { outputString = "Empty"; }
