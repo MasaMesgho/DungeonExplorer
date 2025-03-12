@@ -30,8 +30,7 @@ namespace DungeonExplorer
 
         private void setItems()
         {
-            // use the random generator to assign 25% chances, then assign items based on the type of room.
-            // if the item is out of bounds, will add a bug into the inventory.
+            // Checks the room ID then assigns an item chance, and the amount of tries to get items.
             int amount = 0;
             int chance = 0;
             switch(this.roomID)
@@ -57,10 +56,12 @@ namespace DungeonExplorer
                     chance = 30;
                     break;
             }
+            // for each attempt at an item, uses the chance to attempt adding an item and adds it to the room Inventory.
             for (int i = 1; i<= amount; i++)
             {
+                // uses the item class method Generate item and passes it the chance of an item.
                 string tempItem = Item.GenerateItem(chance);
-                if (tempItem != "None")
+                if (tempItem != "none")
                 {
                     if (roomInventory.ContainsKey(tempItem))
                     {
@@ -96,10 +97,6 @@ namespace DungeonExplorer
                 case 4:
                     this.description = "A silent dining room, rotting tables and scattered cutlery the only signs of time you can see, three Doorways lead deeper in, left, right and forwards";
                     break;
-                default:
-                    // if the room is out of bounds, goes to a errored area, should be no way to reach this room.
-                    this.description = "A unkown sight, a vortex marking a impossible place, three Doorways lead deeper in, left, right and forwards";
-                    break;
 
 
             }
@@ -113,17 +110,19 @@ namespace DungeonExplorer
 
         public Dictionary<string,int> getItems()
         {
+            //creates a temporary dictionary to return if the room has already been searched
             Dictionary<string, int> temp = new Dictionary<string, int>();
             // if the room is searched, first check if the room has been searched already
             if (roomChecked)
             {
+                // adds a checked item to the dictionary which is then handled in the game class
                 temp.Add("checked", 0);
                 return temp;
             }
             
             // check the roomChecked variable so it can't be searched twice
             this.roomChecked = true;
-            // return any item in the room (will return empty if the room has no item)
+            // return every item in the room (will return empty if the room has no items)
             return this.roomInventory;
         }
     }

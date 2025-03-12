@@ -61,6 +61,7 @@ namespace DungeonExplorer
         private string action(string userInput)
         {
             // gets the user input from the main game loop and translates it to a action to be passed back to the main game loop.
+            // currently when moving, can move any direction and will generate a new random room.
             string output = "false";
             switch (userInput)
             {
@@ -80,33 +81,44 @@ namespace DungeonExplorer
                     break;
 
                 case "inventory":
+                    // uses the inventory contents command from the player class
                     Console.WriteLine("{0}", player.InventoryContents());
                     break;
 
                 case "health":
+                    // gets the current health from the player class
                     Console.WriteLine("Current Health: {0}", player.Health);
                     break;
 
                 case "exit":
+                    // breaks the main game loop by passing an exit command to it.
                     output = "exit";
                     break;
 
                 case "search":
+                    // first gets the room contents using the room method getItems
                     Dictionary<string,int> contents = currentRoom.getItems();
+                    // if the room has no items in it (a seached room does not have an empty dictionary.
                     if (contents.Count == 0)
                     {
+                        // tell the user the room is empty.
                         Console.WriteLine("The room is Empty.");
                     }
                     else if (contents.ContainsKey("checked"))
                     {
+                        // if the room contains a checked key (added by the room method
+                        // tell the user they can't search the same room twice
                         Console.WriteLine("You have already searched this room.");
                     }
                     else
                     {
+                        // if the dictionary has elements that are not "checked" let the user know what they found.
                         Console.WriteLine("You have found:");
                         foreach (var item in contents)
                         {
+                            // loop through every item in the array to let the user know what they have added
                             Console.WriteLine("{0} x {1}", item.Value, item.Key);
+                            // add the item x times (where x is the amount in the room) to the players inventory
                             for (int i = 0;i<item.Value;i++)
                             {
                                 player.PickUpItem(item.Key);
@@ -115,8 +127,10 @@ namespace DungeonExplorer
                     }
                     break;
                 case "use":
+                    // if the user uses the use command, get another input for the item type
                     Console.WriteLine("What item would you like to use?");
-                    string itemInput = Console.ReadLine();
+                    string itemInput = Console.ReadLine().ToLower();
+                    // uses the item class method use item, also passes the current player for any effects to be used.
                     Item.useItem(itemInput, player);
                     break;
 

@@ -8,9 +8,12 @@ namespace DungeonExplorer
     {
         // this class contains all the player information and actions.
         // below are the needed variables
+        // uses a private set so it can only be changed within the class for encapsulation
+        // uses a public get so the main game loop can display the variables
         public string Name { get; private set; }
         public int Health { get; private set; }
         private int maxHealth;
+        // inventory is stored as a <string,int> dictionary, which shows the item(string) and the amount (int)
         private Dictionary <string,int> inventory = new Dictionary<string,int>();
 
         public Player(string name) 
@@ -42,6 +45,7 @@ namespace DungeonExplorer
             if (this.inventory.Count != 0)
             {
                 // if the inventory is not empty, loops through all items and their ammunts and passes it back to the game loop
+                // joins it all to an output string which is then passed back.
                 outputString = "";
                 foreach (var i in this.inventory)
                 {
@@ -59,6 +63,8 @@ namespace DungeonExplorer
 
         public bool checkInventory(string itemName)
         {
+            // a method to see if an item is in the players inventory.
+            // returns a bool
             if (this.inventory.ContainsKey(itemName))
             {
                 return true;
@@ -71,9 +77,13 @@ namespace DungeonExplorer
 
         public void removeItem(string itemName)
         {
+            // removes an item from a players inventory
+            // checks that the item is in the players inventory before removing it.
+            // should only be called by something that knows the item is there, so if it isn't raises an exception.
             bool errorCheck = inventory.ContainsKey(itemName);
             Debug.Assert(errorCheck, "Remove item called when " +
                 "item not in inventory");
+            // either reduces the int variable that shows the ammount of the item by 1 or removes the item if only 1 is left.
             if (errorCheck)
             {
                 if (inventory[itemName] > 1)
@@ -89,15 +99,20 @@ namespace DungeonExplorer
 
         public bool changeHealth(int change)
         {
+            // returns a bool for use in taking damage (not implemented) to check if it is fatal
+            // by default the return is true as the player should be alive before this is called
             bool healthLeft = true;
+            // changes the players health
             Health += change;
             if (Health <= 0)
             {
+                // if the player has no health left, return false
                 healthLeft = false;
-                return healthLeft;
             }
             else if (Health > maxHealth)
             {
+                // if the user got more health than they can have.
+                // set it to the max health value.
                 Health = maxHealth;
             }
             return healthLeft;
