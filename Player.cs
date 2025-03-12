@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 
 namespace DungeonExplorer
@@ -65,6 +66,24 @@ namespace DungeonExplorer
             else
             {
                 return false;
+            }
+        }
+
+        public void removeItem(string itemName)
+        {
+            bool errorCheck = inventory.ContainsKey(itemName);
+            Debug.Assert(errorCheck, "Remove item called when " +
+                "item not in inventory");
+            if (!errorCheck)
+            {
+                if (inventory[itemName] > 1)
+                {
+                    inventory[itemName]--;
+                }
+                else 
+                {
+                    inventory.Remove(itemName);
+                }
             }
         }
 

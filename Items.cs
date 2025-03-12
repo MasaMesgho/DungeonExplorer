@@ -11,13 +11,6 @@ using System.Xml;
 namespace DungeonExplorer
 {
 
-    public enum itemType
-    {
-        Equipment,
-        Consumable,
-        Misc
-    }
-
     internal class Item
     {
         public static string GenerateItem(int chance)
@@ -51,6 +44,7 @@ namespace DungeonExplorer
 
         public static void useItem(string itemName, Player currentPlayer)
         {
+            bool errorCheck = true;
             switch (itemName)
             {
                 case "Health Potion":
@@ -61,13 +55,26 @@ namespace DungeonExplorer
                     }
                     else
                     {
-                        Debug.Assert(false, "Item not in Inventory");
+                        errorCheck = false;
                         
                     }
                         break;
                 case "Treasure":
-
+                    if (currentPlayer.checkInventory(itemName))
+                    {
+                        Console.WriteLine("It looks pretty");
+                    }
+                    else
+                    {
+                        errorCheck = false;
+                    }
+                    break;
+                default:
+                    errorCheck = false;
+                    break;
             }
+            Debug.Assert(errorCheck, itemName+", not found in inventory " +
+                "or invalid name");
         }
     }
 }
