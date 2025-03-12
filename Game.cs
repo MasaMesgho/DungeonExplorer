@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Media;
 using System.Runtime.CompilerServices;
 
@@ -91,19 +92,26 @@ namespace DungeonExplorer
                     break;
 
                 case "search":
-                    string contents = currentRoom.getItem();
-                    if (contents == "None")
+                    Dictionary<string,int> contents = currentRoom.getItems();
+                    if (contents.Count == 0)
                     {
                         Console.WriteLine("The room is Empty.");
                     }
-                    else if (contents == "checked")
+                    else if (contents.ContainsKey("checked"))
                     {
                         Console.WriteLine("You have already searched this room.");
                     }
                     else
                     {
-                        Console.WriteLine("You have found 1 x {0}!", contents);
-                        player.PickUpItem(contents);
+                        Console.WriteLine("You have found:");
+                        foreach (var item in contents)
+                        {
+                            Console.WriteLine("{0} x {1}", item.Value, item.Key);
+                            for (int i = 0;i<item.Value;i++)
+                            {
+                                player.PickUpItem(item.Key);
+                            }
+                        }
                     }
                     break;
                 case "use":

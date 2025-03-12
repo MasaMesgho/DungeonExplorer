@@ -1,4 +1,6 @@
 ﻿using System;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Configuration;
 
 namespace DungeonExplorer
@@ -9,7 +11,7 @@ namespace DungeonExplorer
         // needed variables are below with a rng generator (rnd)
         private string description;
         private int roomID;
-        private string item;
+        private Dictionary<string,int> roomInventory = new Dictionary<string, int>();
         private Random rnd = new Random();
         private bool roomChecked;
 
@@ -20,106 +22,55 @@ namespace DungeonExplorer
             if (roomID == 5) { this.roomID = rnd.Next(1, 4); }
             // uses the set description and set item methods
             setDescription();
-            setItem();
+            setItems();
             // sets this room to not have been searched.
             this.roomChecked = false;
 
         }
 
-        private void setItem()
+        private void setItems()
         {
             // use the random generator to assign 25% chances, then assign items based on the type of room.
             // if the item is out of bounds, will add a bug into the inventory.
-            int chance = rnd.Next(1, 5);
+            int amount = 0;
+            int chance = 0;
             switch(this.roomID)
             {
                 case 0:
-                    this.item = "None";
+                    amount = 0;
+                    chance = 0;
                     break;
                 case 1:
-                    switch(chance)
-                    {
-                        case 1:
-                            this.item = "None";
-                            break;
-                        case 2:
-                            this.item = "None";
-                            break;
-                        case 3:
-                            this.item = "Health Potion";
-                            break;
-                        case 4:
-                            this.item = "Treasure";
-                            break;
-                        default:
-                            this.item = "Bug in the code!";
-                                break;
-                    }
+                    amount = 1;
+                    chance = 60;
                     break;
                 case 2:
-                    switch (chance)
-                    {
-                        case 1:
-                            this.item = "None";
-                            break;
-                        case 2:
-                            this.item = "None";
-                            break;
-                        case 3:
-                            this.item = "Health Potion";
-                            break;
-                        case 4:
-                            this.item = "Treasure";
-                            break;
-                        default:
-                            this.item = "Bug in the code!";
-                                break;
-                    }
+                    amount = 2;
+                    chance = 40;
                     break;
                 case 3:
-                    switch (chance)
-                    {
-                        case 1:
-                            this.item = "None";
-                            break;
-                        case 2:
-                            this.item = "None";
-                            break;
-                        case 3:
-                            this.item = "Health Potion";
-                            break;
-                        case 4:
-                            this.item = "Treasure";
-                            break;
-                        default:
-                            this.item = "Bug in the code!";
-                                break;
-                    }
+                    amount = 3;
+                    chance = 60;
                     break;
                 case 4:
-                    switch (chance)
+                    amount = 4;
+                    chance = 30;
+                    break;
+            }
+            for (int i = 1; i<= amount; i++)
+            {
+                string tempItem = Item.GenerateItem(chance);
+                if (tempItem != "None")
+                {
+                    if (roomInventory.ContainsKey(tempItem))
                     {
-                        case 1:
-                            this.item = "None";
-                            break;
-                        case 2:
-                            this.item = "None";
-                            break;
-                        case 3:
-                            this.item = "Health Potion";
-                            break;
-                        case 4:
-                            this.item = "Treasure";
-                            break;
-                        default:
-                            this.item = "Bug in the code!";
-                                break;
+                        roomInventory[tempItem]++;
                     }
-                    break;
-                default:
-                    // if the room ID is out of bounds, adds a bug item for bug testing. (should be no way to obtain this item)
-                    this.item = "Bug in the code!";
-                    break;
+                    else
+                    {
+                        roomInventory.Add(tempItem, 1);
+                    }
+                }
             }
         }
 
@@ -160,14 +111,20 @@ namespace DungeonExplorer
             return this.description;
         }
 
-        public string getItem()
+        public Dictionary<string,int> getItems()
         {
+            Dictionary<string, int> temp = new Dictionary<string, int>();
             // if the room is searched, first check if the room has been searched already
-            if (roomChecked) { return "checked"; }
+            if (roomChecked)
+            {
+                temp.Add("checked", 0);
+                return temp;
+            }
+            
             // check the roomChecked variable so it can't be searched twice
             this.roomChecked = true;
             // return any item in the room (will return empty if the room has no item)
-            return this.item;
+            return this.roomInventory;
         }
     }
 }

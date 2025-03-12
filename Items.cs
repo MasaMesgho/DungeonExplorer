@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
@@ -18,9 +19,10 @@ namespace DungeonExplorer
             string output = "None";
             Random rnd = new Random();
             bool errorCheck = chance > 0 && chance <= 100;
-            Debug.Assert(errorCheck, "Error in chance variable " +
+            Debug.Assert(errorCheck, "Invalid chance variable " +
                 "passed to the item Generator");
-            if (!errorCheck && chance > rnd.Next(1,101))
+            int temp = rnd.Next(1, 101);
+            if (errorCheck && chance >= temp)
             {
                 int itemChance = rnd.Next(1, 5);
                 switch (itemChance)
@@ -44,7 +46,6 @@ namespace DungeonExplorer
 
         public static void useItem(string itemName, Player currentPlayer)
         {
-            bool errorCheck = true;
             switch (itemName)
             {
                 case "Health Potion":
@@ -56,7 +57,8 @@ namespace DungeonExplorer
                     }
                     else
                     {
-                        errorCheck = false;
+                        Console.WriteLine("you have no Health Potions " +
+                            "in your inventory");
                         
                     }
                         break;
@@ -67,15 +69,14 @@ namespace DungeonExplorer
                     }
                     else
                     {
-                        errorCheck = false;
+                        Console.WriteLine("You have no Treasure in your inventory");
                     }
                     break;
                 default:
-                    errorCheck = false;
+                    Console.WriteLine("{0} is not a valid item name", itemName);
                     break;
             }
-            Debug.Assert(errorCheck, itemName+", not found in inventory " +
-                "or invalid name");
+
         }
     }
 }
