@@ -12,7 +12,9 @@ namespace DungeonExplorer
         public Random rnd = new Random();
         public Player player;
         private Room currentRoom;
-
+        /// <summary>
+        /// Initialises the main game loop.
+        /// </summary>
         public Game()
         {
             // Initialize the game with one room and one player after getting their name
@@ -21,6 +23,9 @@ namespace DungeonExplorer
             string name = Console.ReadLine();
             player = new Player(name);
         }
+        /// <summary>
+        /// Starts the main Game Loop
+        /// </summary>
         public void Start()
         {
             // uses a boolean variable to initialize the loop
@@ -53,11 +58,19 @@ namespace DungeonExplorer
                             playing = false;
                             break;
                     }
-                    
                 }
             }
         }
 
+        /// <summary>
+        /// Determines the type of action and calls the relevant methods.
+        /// </summary>
+        /// <param name="userInput">
+        /// The users input.
+        /// </param>
+        /// <returns>
+        /// If a move action has been taken or if the user wants to exit.
+        /// </returns>
         private string action(string userInput)
         {
             // gets the user input from the main game loop and translates it to a action to be passed back to the main game loop.

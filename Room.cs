@@ -15,7 +15,12 @@ namespace DungeonExplorer
         private Dictionary<string,int> roomInventory = new Dictionary<string, int>();
         private Random rnd = new Random();
         private bool roomChecked;
-
+        /// <summary>
+        /// Generates the Room with random attributes if not specified.
+        /// </summary>
+        /// <param name="roomType">
+        /// The Type of room if specifying, leave blank if not specifying.
+        /// </param>
         public Room(int roomType = -1)
         {
             // initializes the room
@@ -30,7 +35,9 @@ namespace DungeonExplorer
             this.roomChecked = false;
 
         }
-
+        /// <summary>
+        /// Adds Items to the Rooms Inventory.
+        /// </summary>
         private void setItems()
         {
             // Checks the room ID then assigns an item chance, and the amount of tries to get items.
@@ -77,7 +84,9 @@ namespace DungeonExplorer
                 }
             }
         }
-
+        /// <summary>
+        /// Sets the Rooms description based on the Room Type.
+        /// </summary>
         private void setDescription()
         {
             // gets the room ID and assigns the correct description based on the room entered.
@@ -89,28 +98,47 @@ namespace DungeonExplorer
                         "\njust inside you see three passages, left, right and forwards, which will you choose?";
                     break;
                 case 1:
-                    this.description = "A great Hall, filled with forgotten crumbling pillars, three Doorways lead deeper in, left, right and forwards";
+                    this.description = "A great Hall, " +
+                        "filled with forgotten crumbling pillars, " +
+                        "three Doorways lead deeper in, left, right and forwards";
                     break;
                 case 2:
-                    this.description = "A crumbling graveyard, littered with broken caskets, three Doorways lead deeper in, left, right and forwards";
+                    this.description = "A crumbling graveyard, " +
+                        "littered with broken caskets, " +
+                        "three Doorways lead deeper in, left, right and forwards";
                     break;
                 case 3:
-                    this.description = "A abandoned tight fitting corridor, crumbling stone walls mark the years passed in this forgotten place, three Doorways lead deeper in, left, right and forwards";
+                    this.description = "A abandoned tight fitting corridor, " +
+                        "crumbling stone walls mark the years passed in this forgotten place, " +
+                        "three Doorways lead deeper in, left, right and forwards";
                     break;
                 case 4:
-                    this.description = "A silent dining room, rotting tables and scattered cutlery the only signs of time you can see, three Doorways lead deeper in, left, right and forwards";
+                    this.description = "A silent dining room, " +
+                        "rotting tables and scattered cutlery the only signs of time you can see, " +
+                        "three Doorways lead deeper in, left, right and forwards";
                     break;
 
 
             }
         }
-
+        /// <summary>
+        /// Gets the current description of the room.
+        /// </summary>
+        /// <returns>
+        /// The Rooms description in string
+        /// </returns>
         public string getDescription()
         {
             // if the description is requested, sends the description.
             return this.description;
         }
-
+        /// <summary>
+        /// Gets the Items in the rooms inventory if the room has not been checked.
+        /// </summary>
+        /// <returns>
+        /// The Items in the rooms inventory if it has not been checked.
+        /// Returns checked if it has already been checked.
+        /// </returns>
         public Dictionary<string,int> getItems()
         {
             //creates a temporary dictionary to return if the room has already been searched

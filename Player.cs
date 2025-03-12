@@ -23,6 +23,12 @@ namespace DungeonExplorer
             maxHealth = 100;
             // assigns the name the user enters from the game loop, then assigns the starting health (100)
         }
+        /// <summary>
+        /// Adds a item to the players inventory.
+        /// </summary>
+        /// <param name="item">
+        /// The Item to be added.
+        /// </param>
         public void PickUpItem(string item)
         {
             // adds an item to the players inventory
@@ -37,6 +43,12 @@ namespace DungeonExplorer
                 this.inventory.Add(item, 1);
             }
         }
+        /// <summary>
+        /// Gets the players current Inventory as a string.
+        /// </summary>
+        /// <returns>
+        /// The Inventory Contents
+        /// </returns>
         public string InventoryContents()
         {
             // returns the inventory contents.
@@ -61,6 +73,15 @@ namespace DungeonExplorer
             return outputString;
         }
 
+        /// <summary>
+        /// Checks the players inventory for the item specified
+        /// </summary>
+        /// <param name="itemName">
+        /// The Item that is being checked for.
+        /// </param>
+        /// <returns>
+        /// True if the item is there, false if not.
+        /// </returns>
         public bool checkInventory(string itemName)
         {
             // a method to see if an item is in the players inventory.
@@ -75,6 +96,12 @@ namespace DungeonExplorer
             }
         }
 
+        /// <summary>
+        /// Removes an Item from the Player Inventory
+        /// </summary>
+        /// <param name="itemName">
+        /// The Item to be removed.
+        /// </param>
         public void removeItem(string itemName)
         {
             // removes an item from a players inventory
@@ -97,6 +124,13 @@ namespace DungeonExplorer
             }
         }
 
+        /// <summary>
+        /// adjusts the player health according to the input int
+        /// </summary>
+        /// <param name="change"></param>
+        /// <returns>
+        /// A bool that signifies if the player is alive after the change.
+        /// </returns>
         public bool changeHealth(int change)
         {
             // returns a bool for use in taking damage (not implemented) to check if it is fatal
