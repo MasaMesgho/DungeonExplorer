@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,39 +20,54 @@ namespace DungeonExplorer
 
     internal class Item
     {
-        itemType thisItemType;
-        private string Name;
-        public string name
+        public static string GenerateItem(int chance)
         {
-            get { return Name; }
-        }
-        public string useItem(Player currentPlayer)
-        {
-            string output = "";
-            switch (thisItemType)
+            string output = "None";
+            Random rnd = new Random();
+            bool errorCheck = chance > 0 && chance <= 100;
+            Debug.Assert(errorCheck, "Error in chance variable " +
+                "passed to the item Generator");
+            if (!errorCheck && chance > rnd.Next(1,101))
             {
-                case itemType.Equipment:
-                    output = "Not currently in use";
-                    break;
-                case itemType.Consumable:
-                    switch (Name)
-                    {
-                        case "Health Potion":
-                            currentPlayer.changeHealth(30);
-                            output = "Your health is restored.";
-                            break;
-                    }
-                    break;
-                case itemType.Misc:
-                    output = ("You don't know how to use this " + Name);
-                    break;
-                default:
-
-                    output = "You encountered an error";
-                    break;
+                int itemChance = rnd.Next(1, 5);
+                switch (itemChance)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                        output = "Health Potion";
+                        break;
+                    case 4:
+                        output = "Treasure";
+                        break;
+                    default:
+                        Debug.Assert(itemChance > 0 && itemChance < 5,
+                            "Error in item chance assignment");
+                        break;
+                }
             }
             return output;
         }
 
+        public static void useItem(string itemName, Player currentPlayer)
+        {
+            switch (itemName)
+            {
+                case "Health Potion":
+                    if (currentPlayer.checkInventory(itemName))
+                    {
+                        Console.WriteLine("You used a health Potion");
+                        currentPlayer.changeHealth(30);
+                    }
+                    else
+                    {
+                        Debug.Assert(false, "Item not in Inventory");
+                        
+                    }
+                        break;
+                case "Treasure":
+
+            }
+        }
     }
 }

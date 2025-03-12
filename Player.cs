@@ -15,7 +15,7 @@ namespace DungeonExplorer
         public Player(string name) 
         {
             Name = name;
-            Health = 100;
+            Health = 70;
             maxHealth = 100;
             // assigns the name the user enters from the game loop, then assigns the starting health (100)
         }
@@ -54,6 +54,18 @@ namespace DungeonExplorer
                 outputString = "Empty";
             }
             return outputString;
+        }
+
+        public bool checkInventory(string itemName)
+        {
+            if (this.inventory.ContainsKey(itemName))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool changeHealth(int change)
