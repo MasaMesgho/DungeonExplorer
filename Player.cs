@@ -9,12 +9,14 @@ namespace DungeonExplorer
         // below are the needed variables
         public string Name { get; private set; }
         public int Health { get; private set; }
+        private int maxHealth;
         private Dictionary <string,int> inventory = new Dictionary<string,int>();
 
         public Player(string name) 
         {
             Name = name;
             Health = 100;
+            maxHealth = 100;
             // assigns the name the user enters from the game loop, then assigns the starting health (100)
         }
         public void PickUpItem(string item)
@@ -52,6 +54,22 @@ namespace DungeonExplorer
                 outputString = "Empty";
             }
             return outputString;
+        }
+
+        public bool changeHealth(int change)
+        {
+            bool healthLeft = true;
+            Health += change;
+            if (Health <= 0)
+            {
+                healthLeft = false;
+                return healthLeft;
+            }
+            else if (Health > maxHealth)
+            {
+                Health = maxHealth;
+            }
+            return healthLeft;
         }
     }
 }
