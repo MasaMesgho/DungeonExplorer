@@ -2,6 +2,7 @@
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace DungeonExplorer
 {
@@ -10,17 +11,19 @@ namespace DungeonExplorer
         // this class contains all information and actions for rooms
         // needed variables are below with a rng generator (rnd)
         private string description;
-        private int roomID;
+        private int roomType;
         private Dictionary<string,int> roomInventory = new Dictionary<string, int>();
         private Random rnd = new Random();
         private bool roomChecked;
 
-        public Room(int roomID = 5)
+        public Room(int roomType = -1)
         {
             // initializes the room
             // generates a random room ID if one is not specified
-            if (roomID == 5) { this.roomID = rnd.Next(1, 4); }
+            if (roomType == -1) { this.roomType = rnd.Next(1, 4); }
             // uses the set description and set item methods
+            // makes sutre the room type is in range.
+            Debug.Assert(roomType < 5 && roomType >= 0, "Room Type out of range.");
             setDescription();
             setItems();
             // sets this room to not have been searched.
@@ -33,7 +36,7 @@ namespace DungeonExplorer
             // Checks the room ID then assigns an item chance, and the amount of tries to get items.
             int amount = 0;
             int chance = 0;
-            switch(this.roomID)
+            switch(this.roomType)
             {
                 case 0:
                     amount = 0;
@@ -78,7 +81,7 @@ namespace DungeonExplorer
         private void setDescription()
         {
             // gets the room ID and assigns the correct description based on the room entered.
-            switch (this.roomID)
+            switch (this.roomType)
             {
                 case 0:
                     this.description = "You arrive at the great Entryway to the dungeon" +

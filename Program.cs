@@ -14,6 +14,9 @@ namespace DungeonExplorer
             // starts the game loop
             Game game = new Game();
             game.Start();
+            Console.WriteLine("See you next time Space Cowboy...");
+            Console.Write("Press any key to close.");
+            Console.ReadKey();
         }
     }
 }
