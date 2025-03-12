@@ -14,6 +14,15 @@ namespace DungeonExplorer
 
     internal class Item
     {
+        /// <summary>
+        /// Potentially generates a random item based on a provided chance.
+        /// </summary>
+        /// <param name="chance">
+        /// The chance of generating a item.
+        /// </param>
+        /// <returns>
+        /// An Item or "none" if the chance fails
+        /// </returns>
         public static string GenerateItem(int chance)
         {
             // method that potentially generates an item
@@ -50,7 +59,15 @@ namespace DungeonExplorer
             }
             return output;
         }
-
+        /// <summary>
+        /// Uses an Item on the specified player
+        /// </summary>
+        /// <param name="itemName">
+        /// The Item to be used.
+        /// </param>
+        /// <param name="currentPlayer">
+        /// The player the item is being used on.
+        /// </param>
         public static void useItem(string itemName, Player currentPlayer)
         {
             // a public method for using an item
