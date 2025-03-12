@@ -74,7 +74,7 @@ namespace DungeonExplorer
             bool errorCheck = inventory.ContainsKey(itemName);
             Debug.Assert(errorCheck, "Remove item called when " +
                 "item not in inventory");
-            if (!errorCheck)
+            if (errorCheck)
             {
                 if (inventory[itemName] > 1)
                 {

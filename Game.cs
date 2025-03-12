@@ -30,7 +30,8 @@ namespace DungeonExplorer
                 // First gets and writes the description of the room
                 Console.WriteLine(currentRoom.getDescription());
                 // lets the user know their commands
-                Console.WriteLine("The commands are: left, forward, right, inventory, health, search, exit");
+                Console.WriteLine("The commands are: " +
+                    "left, forward, right, inventory, use, health, search, exit");
                 // use a while loop to get input from a user until a moving or exit command is used.
                 bool moving = false;
                 while (!moving)
@@ -104,6 +105,11 @@ namespace DungeonExplorer
                         Console.WriteLine("You have found 1 x {0}!", contents);
                         player.PickUpItem(contents);
                     }
+                    break;
+                case "use":
+                    Console.WriteLine("What item would you like to use?");
+                    string itemInput = Console.ReadLine();
+                    Item.useItem(itemInput, player);
                     break;
 
                 default:

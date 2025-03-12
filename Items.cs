@@ -52,6 +52,7 @@ namespace DungeonExplorer
                     {
                         Console.WriteLine("You used a health Potion");
                         currentPlayer.changeHealth(30);
+                        currentPlayer.removeItem(itemName);
                     }
                     else
                     {
