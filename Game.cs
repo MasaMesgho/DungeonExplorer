@@ -10,8 +10,10 @@ namespace DungeonExplorer
     internal class Game
     {
         public Random rnd = new Random();
-        public Player player;
-        private Room currentRoom;
+        // has public get for testing purposes and private set so it can only be changed by the game class
+        // for encapsulation
+        public Player player { get; private set; }
+        public Room currentRoom { get; private set; }
         /// <summary>
         /// Initialises the main game loop.
         /// </summary>
@@ -19,9 +21,11 @@ namespace DungeonExplorer
         {
             // Initialize the game with one room and one player after getting their name
             currentRoom = new Room(0);
+            Testing.TestRoom(currentRoom);
             Console.Write("Please Enter your name: ");
             string name = Console.ReadLine();
             player = new Player(name);
+            Testing.TestPlayer(player);
         }
         /// <summary>
         /// Starts the main Game Loop
@@ -80,16 +84,19 @@ namespace DungeonExplorer
             {
                 case "left":
                     currentRoom = new Room();
+                    Testing.TestRoom(currentRoom);
                     output = "true";
                     break;
 
                 case "forward":
                     currentRoom = new Room();
+                    Testing.TestRoom(currentRoom);
                     output = "true";
                     break;
 
                 case "right":
                     currentRoom = new Room();
+                    Testing.TestRoom(currentRoom);
                     output = "true";
                     break;
 

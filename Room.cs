@@ -21,11 +21,11 @@ namespace DungeonExplorer
         /// <param name="roomType">
         /// The Type of room if specifying, leave blank if not specifying.
         /// </param>
-        public Room(int roomType = -1)
+        public Room(int tempRoomType = -1)
         {
             // initializes the room
             // generates a random room ID if one is not specified
-            if (roomType == -1) { this.roomType = rnd.Next(1, 4); }
+            if (tempRoomType == -1) { roomType = rnd.Next(1, 4); }
             // uses the set description and set item methods
             // makes sutre the room type is in range.
             Debug.Assert(roomType < 5 && roomType >= 0, "Room Type out of range.");
@@ -139,10 +139,13 @@ namespace DungeonExplorer
         /// The Items in the rooms inventory if it has not been checked.
         /// Returns checked if it has already been checked.
         /// </returns>
-        public Dictionary<string,int> getItems()
+        public Dictionary<string,int> getItems(bool test = false)
         {
             //creates a temporary dictionary to return if the room has already been searched
             Dictionary<string, int> temp = new Dictionary<string, int>();
+
+            // if this is called as a test, just returns the rooms description
+            if (test) { return roomInventory; }
             // if the room is searched, first check if the room has been searched already
             if (roomChecked)
             {
@@ -152,9 +155,9 @@ namespace DungeonExplorer
             }
             
             // check the roomChecked variable so it can't be searched twice
-            this.roomChecked = true;
+            roomChecked = true;
             // return every item in the room (will return empty if the room has no items)
-            return this.roomInventory;
+            return roomInventory;
         }
     }
 }
