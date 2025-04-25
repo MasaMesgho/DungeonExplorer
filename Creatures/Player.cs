@@ -82,18 +82,12 @@ namespace DungeonExplorer
         /// <returns>
         /// True if the item is there, false if not.
         /// </returns>
-        public bool checkInventory(string itemName)
+        public bool checkInventory(int itemID)
         {
             // a method to see if an item is in the players inventory.
             // returns a bool
-            if (this.inventory.ContainsKey(itemName))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+
+            // needs to be reworked after item rework
         }
 
         /// <summary>
@@ -124,13 +118,18 @@ namespace DungeonExplorer
             }
         }
 
+        public void Equip(Item equipment)
+        {
+            if (checkInventory(equipment.iD))
+        }
+
         /// <summary>
         /// adjusts the player health according to the input int
         /// </summary>
         /// <param name="change"></param>
         /// <returns>
         /// A bool that signifies if the player is alive after the change.
-        /// </returns>
+        /// </returns> 
         public bool changeHealth(int change)
         {
             // returns a bool for use in taking damage (not implemented) to check if it is fatal

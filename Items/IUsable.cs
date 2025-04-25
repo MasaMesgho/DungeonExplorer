@@ -11,6 +11,6 @@ namespace DungeonExplorer
     /// </summary>
     interface IUsable
     {
-        void Use();
+        void Use(Player player);
     }
 }

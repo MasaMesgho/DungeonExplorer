@@ -8,12 +8,13 @@ namespace DungeonExplorer
 {
     class Potion : Item
     {
-        // adds in a restores value to the potion
+        // adds in a value for the amount the potion restores
         protected int Restores;
 
         /// <summary>
-        /// creates an instance of the potion.
+        /// Creates an instance of the potion item
         /// </summary>
+        /// <param name="level"> the level of the health potion </param>
         public Potion(int level)
         {
             this.name = "Health Potion";
