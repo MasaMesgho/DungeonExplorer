@@ -15,6 +15,7 @@ namespace DungeonExplorer
             get { return Damage; }
             protected set { Damage = value; }
         }
+        protected ItemType type;
 
         /// <summary>
         /// creates an instance of the sword item

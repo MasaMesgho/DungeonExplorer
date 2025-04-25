@@ -11,11 +11,11 @@ using System.Xml;
 
 namespace DungeonExplorer
 {
-    // defines equipment types
-    enum EquipmentType
+    // defines item types
+    public enum ItemTypes
     {
         weapon,
-        armour
+        potion
     }
     /// <summary>
     /// abstract class to be inherited by all items
@@ -25,6 +25,13 @@ namespace DungeonExplorer
         // all items will need an ID, Name and Description
         // these are all protected values as I do not want them changed outside of the class
         // they have a public version so that I can retrieve the values outside of the class
+
+        protected ItemTypes ItemType;
+        public ItemTypes itemType
+        {
+            get { return ItemType; }
+            protected set { ItemType = value; }
+        }
         protected int ID;
         public int iD
         {
