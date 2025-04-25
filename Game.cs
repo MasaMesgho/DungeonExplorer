@@ -141,7 +141,7 @@ namespace DungeonExplorer
                             // add the item x times (where x is the amount in the room) to the players inventory
                             for (int i = 0;i<item.Value;i++)
                             {
-                                player.PickUpItem(item.Key);
+                                player.PickUpItem(new Potion(1));
                             }
                         }
                     }
@@ -151,7 +151,7 @@ namespace DungeonExplorer
                     Console.WriteLine("What item would you like to use?");
                     string itemInput = Console.ReadLine().ToLower();
                     // uses the item class method use item, also passes the current player for any effects to be used.
-                    Item.useItem(itemInput, player);
+                    
                     break;
 
                 default:

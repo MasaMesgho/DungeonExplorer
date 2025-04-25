@@ -15,7 +15,6 @@ namespace DungeonExplorer
             get { return Damage; }
             protected set { Damage = value; }
         }
-        protected ItemType type;
 
         /// <summary>
         /// creates an instance of the sword item
@@ -26,8 +25,9 @@ namespace DungeonExplorer
             name = "Sword";
             if (level > 1) name += " +" + (level - 1);
             damage = 5 + (level * 5);
-            description = $"A Level {level} sword, it makes enemies unhappy (does {damage} damage)";
-            iD = 2;
+            description = $"A Level {level} sword, it makes enemies unhappy " +
+                          $"(does {damage} damage)";
+            iD = Int32.Parse($"2{level}");
             itemType = ItemTypes.weapon;
         }
 

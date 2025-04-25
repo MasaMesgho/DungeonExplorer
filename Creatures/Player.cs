@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
+using System.Linq;
 
 namespace DungeonExplorer
 {
@@ -16,8 +17,8 @@ namespace DungeonExplorer
         public Item weapon;
 
         private int maxHealth;
-        // inventory is stored as a <string,int> dictionary, which shows the item(string) and the amount (int)
-        private Dictionary <string,int> inventory = new Dictionary<string,int>();
+        // inventory is a array of items with a max size of 10
+        private Item[] inventory = new Item[10];
 
         public Player(string name) 
         {
@@ -32,18 +33,12 @@ namespace DungeonExplorer
         /// <param name="item">
         /// The Item to be added.
         /// </param>
-        public void PickUpItem(string item)
+        public void PickUpItem(Item item)
         {
-            // adds an item to the players inventory
-            // if the item is already in the inventory adds 1 to the dictionary int value to show the ammount
-            // if the item is not in the inventory creates a new dictionary item for it.
-            if (this.inventory.ContainsKey(item))
+            // adds an item to the players inventory if it has a space for it.
+            if (inventory.Contains(null))
             {
-                this.inventory[item]++;
-            }
-            else
-            {
-                this.inventory.Add(item, 1);
+                inventory.Append(item);
             }
         }
         /// <summary>
@@ -56,23 +51,15 @@ namespace DungeonExplorer
         {
             // returns the inventory contents.
             // first checks if the inventory is empty
-            string outputString;
-            if (this.inventory.Count != 0)
+            string outputString = "";
+            bool empty = true;
+            foreach (Item item in inventory)
             {
-                // if the inventory is not empty, loops through all items and their ammunts and passes it back to the game loop
-                // joins it all to an output string which is then passed back.
-                outputString = "";
-                foreach (var i in this.inventory)
-                {
-                    string tempString = i.Value + " x " + i.Key+"\n";
-                    outputString += tempString;
-                }
+                empty = false;
+                outputString += item.name + "\n";
+
             }
-            else
-            {
-                // if the inventory is empty, returns that information.
-                outputString = "Empty";
-            }
+            if (empty) outputString = "Your inventory is Empty...";
             return outputString;
         }
 
@@ -100,24 +87,27 @@ namespace DungeonExplorer
         /// <param name="itemName">
         /// The Item to be removed.
         /// </param>
-        public void removeItem(string itemName)
+        public void removeItem(int itemID)
         {
             // removes an item from a players inventory
             // checks that the item is in the players inventory before removing it.
             // should only be called by something that knows the item is there, so if it isn't raises an exception.
-            bool errorCheck = inventory.ContainsKey(itemName);
+            bool errorCheck = false;
+            foreach (Item item in inventory)
+            {
+                if (item.iD == itemID) errorCheck = true;
+            }
             Debug.Assert(errorCheck, "Remove item called when " +
                 "item not in inventory");
             // either reduces the int variable that shows the ammount of the item by 1 or removes the item if only 1 is left.
             if (errorCheck)
             {
-                if (inventory[itemName] > 1)
+                int i = 0;
+                bool removed = false;
+                foreach (Item item in inventory)
                 {
-                    inventory[itemName]--;
-                }
-                else 
-                {
-                    inventory.Remove(itemName);
+                    if (!removed && item.iD == itemID) inventory[i] = null;
+                    i++;
                 }
             }
         }

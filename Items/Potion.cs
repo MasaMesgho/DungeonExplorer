@@ -20,7 +20,7 @@ namespace DungeonExplorer
             name = "Health Potion";
             // if the health potion is better than the basic (level 1) shows how advanced it is.
             if (level > 1) name += "+ " + (level - 1);
-            iD = 1;
+            iD = Int32.Parse($"1{level}");
             Restores = 10 + level*5;
             description = $"A Level {level} Health Potion, it makes you feel better (restores {Restores} health)";
             itemType = ItemTypes.potion;
