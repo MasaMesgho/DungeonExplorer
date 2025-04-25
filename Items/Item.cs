@@ -11,7 +11,15 @@ using System.Xml;
 
 namespace DungeonExplorer
 {
-
+    // defines equipment types
+    enum EquipmentType
+    {
+        weapon,
+        armour
+    }
+    /// <summary>
+    /// abstract class to be inherited by all items
+    /// </summary>
     public abstract class Item : IUsable
     {
         // all items will need an ID, Name and Description

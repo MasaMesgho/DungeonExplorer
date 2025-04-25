@@ -12,6 +12,9 @@ namespace DungeonExplorer
         // uses a public get so the main game loop can display the variables
         public string Name { get; private set; }
         public int Health { get; private set; }
+
+        public Item weapon;
+
         private int maxHealth;
         // inventory is stored as a <string,int> dictionary, which shows the item(string) and the amount (int)
         private Dictionary <string,int> inventory = new Dictionary<string,int>();
@@ -88,6 +91,7 @@ namespace DungeonExplorer
             // returns a bool
 
             // needs to be reworked after item rework
+            return false;
         }
 
         /// <summary>
@@ -121,6 +125,18 @@ namespace DungeonExplorer
         public void Equip(Item equipment)
         {
             if (checkInventory(equipment.iD))
+            {
+                switch (equipment.type)
+                {
+                    case equipmentType.weapon:
+                        weapon = equipment;
+
+                }
+            }
+            else 
+            {
+                
+            }
         }
 
         /// <summary>

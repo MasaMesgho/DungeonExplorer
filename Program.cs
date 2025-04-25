@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
+
     internal class Program
     {
+
         // this is where the core program branches from
         /// <summary>
         /// The main program call, runs the program.
