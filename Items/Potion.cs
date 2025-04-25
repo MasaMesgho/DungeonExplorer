@@ -17,12 +17,13 @@ namespace DungeonExplorer
         /// <param name="level"> the level of the health potion </param>
         public Potion(int level)
         {
-            this.name = "Health Potion";
+            name = "Health Potion";
             // if the health potion is better than the basic (level 1) shows how advanced it is.
-            if (level > 1) this.name += "+ " + (level - 1);
-            this.iD = 1;
-            this.Restores = 10 + level*5;
-            this.description = $"A Level {level} Health Potion, it makes you feel better (restores {Restores} health)";
+            if (level > 1) name += "+ " + (level - 1);
+            iD = 1;
+            Restores = 10 + level*5;
+            description = $"A Level {level} Health Potion, it makes you feel better (restores {Restores} health)";
+            itemType = ItemTypes.potion;
         }
         /// <summary>
         /// uses the potion, restores the stored amount of health to the player

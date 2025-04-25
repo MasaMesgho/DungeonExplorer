@@ -28,6 +28,7 @@ namespace DungeonExplorer
             damage = 5 + (level * 5);
             description = $"A Level {level} sword, it makes enemies unhappy (does {damage} damage)";
             iD = 2;
+            itemType = ItemTypes.weapon;
         }
 
         /// <summary>

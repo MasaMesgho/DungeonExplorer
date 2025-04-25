@@ -126,10 +126,13 @@ namespace DungeonExplorer
         {
             if (checkInventory(equipment.iD))
             {
-                switch (equipment.type)
+                switch (equipment.itemType)
                 {
-                    case equipmentType.weapon:
+                    case ItemTypes.weapon:
                         weapon = equipment;
+                        break;
+                    default:
+                        break;
 
                 }
             }
