@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonExplorer.Creatures
+namespace DungeonExplorer
 {
     internal class Goblin : Creature
     {
@@ -12,6 +12,7 @@ namespace DungeonExplorer.Creatures
         {
             resistance = 0;
             maxHealth = 10 + (level * 5);
+            Damage = 3 + (level * 2);
             health = maxHealth;
 
             if (level < 5)
@@ -44,7 +45,7 @@ namespace DungeonExplorer.Creatures
         {
             if (!target.TakeDamage(Damage))
             {
-                Console.WriteLine("");
+                Console.WriteLine($"Your vision fades, your journey ended by a {name}");
             }
         }
 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonExplorer.Rooms
+namespace DungeonExplorer
 {
-    internal class Corridor
+    internal class FinalRoom
     {
     }
 }

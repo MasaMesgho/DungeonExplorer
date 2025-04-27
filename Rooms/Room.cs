@@ -8,6 +8,16 @@ namespace DungeonExplorer
 {
     public class Room
     {
+
+        public enum RoomType
+        {
+            dungeon,
+            hall,
+            treasureRoom,
+            barraks,
+            final
+        }
+
         // this class contains all information and actions for rooms
         // needed variables are below with a rng generator (rnd)
         private string description;

@@ -7,9 +7,10 @@ using System.Runtime.CompilerServices;
 
 namespace DungeonExplorer
 {
-    abstract class Game
+    internal class Game
     {
-        public static Random rnd = new Random();
+        private bool GameRunning;
+
         // has public get for testing purposes and private set so it can only be changed by the game class
         // for encapsulation
         public Player player { get; private set; }
@@ -34,9 +35,9 @@ namespace DungeonExplorer
         public void Start()
         {
             // uses a boolean variable to initialize the loop
-            bool playing = true;
+            GameRunning = true;
             // loops while the game is running
-            while (playing)
+            while (GameRunning)
             {
                 // First gets and writes the description of the room
                 Console.WriteLine(currentRoom.getDescription());
@@ -60,7 +61,7 @@ namespace DungeonExplorer
                             break;
                         case "exit":
                             moving = true;
-                            playing = false;
+                            GameRunning = false;
                             break;
                     }
                 }
@@ -161,6 +162,11 @@ namespace DungeonExplorer
                     break;
             }
             return output;
+        }
+
+        public void GameOver()
+        {
+            GameRunning = false;
         }
     }
 }

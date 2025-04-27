@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonExplorer.Creatures
+namespace DungeonExplorer
 {
     internal class Slime : Creature
     {
@@ -14,6 +14,7 @@ namespace DungeonExplorer.Creatures
             if (resistance > 75) resistance = 75;
             maxHealth = 10 + (level * 2);
             health = maxHealth;
+            Damage = 3 + (level * 2);
 
             if (level < 5)
             {
@@ -39,6 +40,14 @@ namespace DungeonExplorer.Creatures
             else
             {
                 return false;
+            }
+        }
+
+        public override void Attack(Creature target)
+        {
+            if (!target.TakeDamage(Damage))
+            {
+                Console.WriteLine($"Your vision fades, your journey ended by a {name}");
             }
         }
     }

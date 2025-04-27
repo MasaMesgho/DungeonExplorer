@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonExplorer.Creatures
+namespace DungeonExplorer
 {
     abstract class Creature : IDamageable, IAttack
     {
@@ -42,6 +42,6 @@ namespace DungeonExplorer.Creatures
 
         public abstract bool TakeDamage(int amount);
 
-        public abstract int Attack();
+        public abstract void Attack(Creature target);
     }
 }

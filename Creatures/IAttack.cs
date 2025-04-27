@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DungeonExplorer.Creatures
+namespace DungeonExplorer
 {
     internal interface IAttack
     {
-        int Attack();
+        void Attack(Creature target);
     }
 }
