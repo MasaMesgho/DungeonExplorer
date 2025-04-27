@@ -40,5 +40,13 @@ namespace DungeonExplorer.Creatures
                 return false;
             }
         }
+        public override void Attack(Creature target)
+        {
+            if (!target.TakeDamage(Damage))
+            {
+                Console.WriteLine("");
+            }
+        }
+
     }
 }

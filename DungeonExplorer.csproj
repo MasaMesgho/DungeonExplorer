@@ -58,7 +58,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rooms\Corridor.cs" />
+    <Compile Include="Rooms\Dungeon.cs" />
+    <Compile Include="Rooms\GameMap.cs" />
+    <Compile Include="Rooms\Hall.cs" />
     <Compile Include="Rooms\Room.cs" />
+    <Compile Include="Rooms\TreasureRoom.cs" />
     <Compile Include="Testing.cs" />
   </ItemGroup>
   <ItemGroup>
