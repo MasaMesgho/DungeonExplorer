@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
-using DungeonExplorer.Creatures;
 
 namespace DungeonExplorer
 {
