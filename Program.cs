@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
+
     internal class Program
     {
         public static Random rnd = new Random();

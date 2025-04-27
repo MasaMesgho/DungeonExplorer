@@ -70,7 +70,7 @@ namespace DungeonExplorer
             for (int i = 1; i<= amount; i++)
             {
                 // uses the item class method Generate item and passes it the chance of an item.
-                string tempItem = Item.GenerateItem(chance);
+                string tempItem = "none";
                 if (tempItem != "none")
                 {
                     if (roomInventory.ContainsKey(tempItem))
