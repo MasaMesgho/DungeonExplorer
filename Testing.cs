@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    internal class Testing
+    public class Testing
     {
         /// <summary>
         /// makes sure all the rooms public atributes are filled.
@@ -21,6 +22,21 @@ namespace DungeonExplorer
             // does not check inventory as this can be empty
             Debug.Assert(testRoom != null, "No Room found");
             Debug.Assert(testRoom.getDescription() != null, "Room Has no description");
+        }
+
+        public static void TestMap()
+        {
+            GameMap map = new GameMap();
+            Console.WriteLine("Floor {0}", map.floor);
+            foreach (int[] floor in map.roomGrid)
+            {
+                foreach (int room in floor)
+                {
+                    Console.Write(room+" ");
+                }
+                Console.WriteLine();
+            }
+            Console.ReadLine();
         }
 
         /// <summary>

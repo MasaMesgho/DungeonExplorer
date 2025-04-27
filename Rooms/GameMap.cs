@@ -14,16 +14,16 @@ namespace DungeonExplorer
         South
     }
 
-    internal class GameMap
+    public class GameMap
     {
-        private int[] PlayerLocation;
+        private int[] PlayerLocation = new int[2];
         public int[] playerLocation
         {
             get { return PlayerLocation; }
             private set { PlayerLocation = value; }
         }
 
-        private List<int[]> visited;
+        private List<int[]> visited = new List<int[]>();
 
         private int Floor;
         public int floor
@@ -33,13 +33,17 @@ namespace DungeonExplorer
 
         private List<RoomType> Rooms = new List<RoomType>();
 
-        List<int[]> RoomGrid = new List<int[]>();
+        private List<int[]> RoomGrid = new List<int[]>();
+        public List<int[]> roomGrid
+        {
+            get { return RoomGrid; }
+            private set { RoomGrid = value; }
+        }
 
         public GameMap()
         {
 
             Floor = 1;
-            Rooms.Clear();
             GenerateRooms();
             CreateConnections();
             PlayerLocation[0] = 0;
@@ -90,12 +94,14 @@ namespace DungeonExplorer
             List<int[]> RoomLocations = new List<int[]>();
             for (int i = 0; i < 3; i++)
             {
-                for (int j = 0; j < 3; i++)
+                int[] tempInts = new int[3];
+                for (int j = 0; j < 3; j++)
                 {
-                    RoomGrid[i][j] = 0;
+                    tempInts[j] = 0;
                 }
+                RoomGrid.Add(tempInts);
             }
-            RoomGrid[0][2] = 1;
+            roomGrid[0][2] = 1;
             int[] newLocation = new int[2];
             newLocation[0] = 0;
             newLocation[1] = 2;
@@ -108,27 +114,27 @@ namespace DungeonExplorer
                 {
                     RoomConnection = Program.rnd.Next(0, availableRooms.Count - 1);
                     List<Directions> availableDirections = new List<Directions>();
-                    if (RoomLocations[RoomConnection][0] < 1 && RoomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] == 0) availableDirections.Add(Directions.North);
-                    if (RoomLocations[RoomConnection][0] >= 1 && RoomGrid[availableRooms[RoomConnection][0] - 1][availableRooms[RoomConnection][1]] == 0) availableDirections.Add(Directions.South);
-                    if (RoomLocations[RoomConnection][1] < 1 && RoomGrid[availableRooms[RoomConnection][0]][availableRooms[RoomConnection][1] +1] == 0) availableDirections.Add(Directions.East);
-                    if (RoomLocations[RoomConnection][1] >= 1 && RoomGrid[availableRooms[RoomConnection][0]][availableRooms[RoomConnection][1] - 1] == 0) availableDirections.Add(Directions.West);
+                    if (RoomLocations[RoomConnection][0] < 1 && roomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] == 0) availableDirections.Add(Directions.North);
+                    if (RoomLocations[RoomConnection][0] >= 1 && roomGrid[availableRooms[RoomConnection][0] - 1][availableRooms[RoomConnection][1]] == 0) availableDirections.Add(Directions.South);
+                    if (RoomLocations[RoomConnection][1] < 1 && roomGrid[availableRooms[RoomConnection][0]][availableRooms[RoomConnection][1] +1] == 0) availableDirections.Add(Directions.East);
+                    if (RoomLocations[RoomConnection][1] >= 1 && roomGrid[availableRooms[RoomConnection][0]][availableRooms[RoomConnection][1] - 1] == 0) availableDirections.Add(Directions.West);
                     if (availableDirections.Count > 0) break;
                     availableRooms.RemoveAt(RoomConnection);
                 }
 
-                RoomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 1;
+                roomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 1;
                 switch (room)
                 {
                     case RoomType.hall:
-                        RoomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 2;
+                        roomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 2;
                         break;
 
                     case RoomType.treasure:
-                        RoomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 3;
+                        roomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 3;
                         break;
 
                     case RoomType.dungeon:
-                        RoomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 4;
+                        roomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 4;
                         break;
                 }
 

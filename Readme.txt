@@ -1,10 +1,10 @@
 To-Do:
 change player inventory system to accomadate new items
-add abstract class for Creatures
-add enemies
-add droptable class for room and enemies
-add attack methods for player and enemies
-add tracking for amount of rooms visited
-add difficulty that scales based on amount of rooms visited
+Rewrite Player Class
+implement droptable class for room and enemies
 sort changes
 recomment changed code
+Finish rooms
+Change Game class to accomodate changes
+Rewrite Testing Class to accomodate changes
+Fix GameMap - Doesn't add rooms once placed so will always overwrite the rooms and place them south

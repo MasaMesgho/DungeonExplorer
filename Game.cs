@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace DungeonExplorer
 {
-    internal class Game
+    public class Game
     {
         private bool GameRunning;
 

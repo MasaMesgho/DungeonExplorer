@@ -18,6 +18,7 @@ namespace DungeonExplorer
         static void Main(string[] args)
         {
             // starts the game loop
+            Testing.TestMap();
             Game game = new Game();
             Testing.TestGame(game);
             game.Start();
