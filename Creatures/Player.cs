@@ -2,21 +2,15 @@
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using DungeonExplorer.Creatures;
 
 namespace DungeonExplorer
 {
-    public class Player
+    public class Player : Creature
     {
-        // this class contains all the player information and actions.
-        // below are the needed variables
-        // uses a private set so it can only be changed within the class for encapsulation
-        // uses a public get so the main game loop can display the variables
-        public string Name { get; private set; }
-        public int Health { get; private set; }
 
         public Item weapon;
 
-        private int maxHealth;
         // inventory is a array of items with a max size of 10
         private Item[] inventory = new Item[10];
 

@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Creatures\Creature.cs" />
+    <Compile Include="Creatures\Goblin.cs" />
+    <Compile Include="Creatures\IAttack.cs" />
+    <Compile Include="Creatures\IDamageable.cs" />
+    <Compile Include="Creatures\Slime.cs" />
     <Compile Include="DropTable.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Items\Item.cs" />
@@ -52,6 +57,7 @@
     <Compile Include="Items\Sword.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rooms\Corridor.cs" />
     <Compile Include="Rooms\Room.cs" />
     <Compile Include="Testing.cs" />
   </ItemGroup>
