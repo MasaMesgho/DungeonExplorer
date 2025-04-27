@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    internal class FinalRoom
+    internal class FinalRoom : Room
     {
     }
 }

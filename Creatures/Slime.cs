@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    internal class Slime : Creature
+    public class Slime : Creature
     {
         public Slime(int level)
         {

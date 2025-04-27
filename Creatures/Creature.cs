@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    abstract class Creature : IDamageable, IAttack
+    public abstract class Creature : IDamageable, IAttack
     {
         protected int Health;
         public int health

@@ -33,8 +33,8 @@ namespace DungeonExplorer
         {
             // makes sure all player public attributes are filled
             Debug.Assert(testPlayer != null, "No player found");
-            Debug.Assert(testPlayer.Name != null, "Player has no name");
-            Debug.Assert(testPlayer.Health != 0, "Player has no health");
+            Debug.Assert(testPlayer.name != null, "Player has no name");
+            Debug.Assert(testPlayer.health != 0, "Player has no health");
             Debug.Assert(testPlayer.InventoryContents() != null, "Player Contents method failed.");
                    
         }

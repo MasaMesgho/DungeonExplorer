@@ -16,7 +16,17 @@ namespace DungeonExplorer
 
     internal class GameMap
     {
-        public int Floor
+        private int[] PlayerLocation;
+        public int[] playerLocation
+        {
+            get { return PlayerLocation; }
+            private set { PlayerLocation = value; }
+        }
+
+        private List<int[]> visited;
+
+        private int Floor;
+        public int floor
         {
             get; private set;
         }
@@ -27,20 +37,29 @@ namespace DungeonExplorer
 
         public GameMap()
         {
+
             Floor = 1;
+            Rooms.Clear();
             GenerateRooms();
             CreateConnections();
+            PlayerLocation[0] = 0;
+            PlayerLocation[1] = 2;
+            visited.Add(playerLocation);
         }
 
         /// <summary>
         /// Clears the Floor and rebuilds it
         /// </summary>
-        public void NewFloor()
+        public Room NewFloor()
         {
             Floor = Floor + 1;
             Rooms.Clear();
             GenerateRooms();
             CreateConnections();
+            PlayerLocation[0] = 0;
+            PlayerLocation[1] = 2;
+            visited.Add(playerLocation);
+            return new EntryRoom();
         }
 
         /// <summary>
@@ -83,10 +102,11 @@ namespace DungeonExplorer
             RoomLocations.Add(newLocation);
             foreach (RoomType room in Rooms)
             {
+                int RoomConnection;
                 List<int[]> availableRooms = RoomLocations;
                 while (true)
                 {
-                    int RoomConnection = Program.rnd.Next(0, availableRooms.Count - 1);
+                    RoomConnection = Program.rnd.Next(0, availableRooms.Count - 1);
                     List<Directions> availableDirections = new List<Directions>();
                     if (RoomLocations[RoomConnection][0] < 1 && RoomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] == 0) availableDirections.Add(Directions.North);
                     if (RoomLocations[RoomConnection][0] >= 1 && RoomGrid[availableRooms[RoomConnection][0] - 1][availableRooms[RoomConnection][1]] == 0) availableDirections.Add(Directions.South);
@@ -96,7 +116,21 @@ namespace DungeonExplorer
                     availableRooms.RemoveAt(RoomConnection);
                 }
 
+                RoomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 1;
+                switch (room)
+                {
+                    case RoomType.hall:
+                        RoomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 2;
+                        break;
 
+                    case RoomType.treasure:
+                        RoomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 3;
+                        break;
+
+                    case RoomType.dungeon:
+                        RoomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 4;
+                        break;
+                }
 
             }
         }

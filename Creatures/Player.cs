@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
@@ -13,13 +14,15 @@ namespace DungeonExplorer
         // inventory is a array of items with a max size of 10
         private Item[] inventory = new Item[10];
 
-        public Player(string name) 
+        public Player(string playerName)
         {
-            Name = name;
-            Health = 70;
-            maxHealth = 100;
             // assigns the name the user enters from the game loop, then assigns the starting health (100)
+            name = playerName;
+            maxHealth = 100;
+            health = maxHealth;
+            resistance = 0;
         }
+
         /// <summary>
         /// Adds a item to the players inventory.
         /// </summary>
@@ -34,6 +37,7 @@ namespace DungeonExplorer
                 inventory.Append(item);
             }
         }
+
         /// <summary>
         /// Gets the players current Inventory as a string.
         /// </summary>
@@ -48,8 +52,11 @@ namespace DungeonExplorer
             bool empty = true;
             foreach (Item item in inventory)
             {
-                empty = false;
-                outputString += item.name + "\n";
+                if (item != null)
+                {
+                    empty = false;
+                    outputString += item.name + "\n";
+                }
 
             }
             if (empty) outputString = "Your inventory is Empty...";
@@ -152,5 +159,25 @@ namespace DungeonExplorer
             }
             return healthLeft;
         }
+        public override bool TakeDamage(int amount)
+        {
+            health -= amount * ((100 - resistance) / 100);
+            if (health > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public override void Attack(Creature target)
+        {
+            if (!target.TakeDamage(Damage))
+            {
+                Console.WriteLine($"Your vision fades, your journey ended by a {name}");
+            }
+        }
+
     }
 }

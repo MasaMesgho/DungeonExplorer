@@ -109,7 +109,7 @@ namespace DungeonExplorer
 
                 case "health":
                     // gets the current health from the player class
-                    Console.WriteLine("Current Health: {0}", player.Health);
+                    Console.WriteLine("Current Health: {0}", player.health);
                     break;
 
                 case "exit":

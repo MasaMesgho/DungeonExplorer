@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    internal class Hall
+    internal class Hall : Room
     {
     }
 }

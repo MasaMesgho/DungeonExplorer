@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    internal class Goblin : Creature
+    public class Goblin : Creature
     {
         public Goblin(int level) 
         {
