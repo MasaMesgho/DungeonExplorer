@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DropTable.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Items\Item.cs" />
     <Compile Include="Creatures\Player.cs" />

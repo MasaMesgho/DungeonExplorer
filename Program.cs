@@ -8,6 +8,7 @@ namespace DungeonExplorer
 {
     internal class Program
     {
+        public static Random rnd = new Random();
         // this is where the core program branches from
         /// <summary>
         /// The main program call, runs the program.

@@ -7,9 +7,9 @@ using System.Runtime.CompilerServices;
 
 namespace DungeonExplorer
 {
-    internal class Game
+    abstract class Game
     {
-        public Random rnd = new Random();
+        public static Random rnd = new Random();
         // has public get for testing purposes and private set so it can only be changed by the game class
         // for encapsulation
         public Player player { get; private set; }
@@ -27,6 +27,7 @@ namespace DungeonExplorer
             player = new Player(name);
             Testing.TestPlayer(player);
         }
+
         /// <summary>
         /// Starts the main Game Loop
         /// </summary>
