@@ -234,19 +234,25 @@ namespace DungeonExplorer
                 // while loop to make sure the room has a valid space before closing the loop.
                 while (true)
                 {
+                    //choose a random room to add the new room to as a connection
                     RoomConnection = Program.rnd.Next(0, availableRooms.Count);
+                    // check adjacent spaces, if there is room for a new room there, add it to the available directions
                     if (RoomLocations[RoomConnection][0] <= 1 && roomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] == 0) availableDirections.Add(Directions.South);
                     if (RoomLocations[RoomConnection][0] >= 1 && roomGrid[availableRooms[RoomConnection][0] - 1][availableRooms[RoomConnection][1]] == 0) availableDirections.Add(Directions.North);
                     if (RoomLocations[RoomConnection][1] <= 1 && roomGrid[availableRooms[RoomConnection][0]][availableRooms[RoomConnection][1] +1] == 0) availableDirections.Add(Directions.East);
                     if (RoomLocations[RoomConnection][1] >= 1 && roomGrid[availableRooms[RoomConnection][0]][availableRooms[RoomConnection][1] - 1] == 0) availableDirections.Add(Directions.West);
+                    // if there is at least 1 available space, break the loop
                     if (availableDirections.Count > 0) break;
+                    // if there is no available spaces, remoove that room so it is not chosen again
                     availableRooms.RemoveAt(RoomConnection);
                 }
+                // chose a random direction that is available.
                 int chance = Program.rnd.Next(0, availableDirections.Count);
                 Directions Direction = availableDirections[chance];
+                // x and y coordinates to be used, uses 2,2 as the default as a default needs to be there.
                 int x = 2;
                 int y = 2;
-
+                // adds the room to the chosen space in the direction chosen.
                 switch (Direction)
                 {
                     case Directions.North:
@@ -266,11 +272,12 @@ namespace DungeonExplorer
                         x = availableRooms[RoomConnection][1] - 1;
                         break;
                 }
+                // adds the newly placed room to the roomlocations so that it can be connected to in the next loop
                 int[] location = new int[2];
                 location[0] = y;
                 location[1] = x;
                 RoomLocations.Add(location);
-
+                // depending on the type of room, adds a room ID to the roomGrid
                 switch (room)
                 {
                     case RoomType.hall:
@@ -287,10 +294,9 @@ namespace DungeonExplorer
                 }
 
             }
-
+            // same as above, but for the final room.
             while (true)
             {
-                // places the final room
                 // tries to place it in the bottom right corner of the grid
                 // checks available spaces and places it in the nearest space.
                 if (RoomGrid[2][0] == 0 && (RoomGrid[1][0] > 0 || RoomGrid[2][1] > 0)) RoomGrid[2][0] = 5;
