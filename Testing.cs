@@ -27,6 +27,7 @@ namespace DungeonExplorer
         public static void TestMap()
         {
             GameMap map = new GameMap();
+            Room testRoom = map.NewFloor();
             Console.WriteLine("Floor {0}", map.floor);
             foreach (int[] floor in map.roomGrid)
             {

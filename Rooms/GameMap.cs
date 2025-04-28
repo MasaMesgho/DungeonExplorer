@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,13 +44,7 @@ namespace DungeonExplorer
 
         public GameMap()
         {
-
             floor = 0;
-            GenerateRooms();
-            CreateConnections();
-            PlayerLocation[0] = 0;
-            PlayerLocation[1] = 2;
-            visited.Add(playerLocation);
         }
 
         /// <summary>
@@ -89,6 +84,10 @@ namespace DungeonExplorer
                     break;
             }
 
+            Debug.Assert(PlayerLocation[0] >=0 && playerLocation[0] <=2, "Y axis out of range.");
+            Debug.Assert(PlayerLocation[1] >= 0 && playerLocation[1] <= 2, "X axis out of range.");
+            Debug.Assert(RoomGrid[playerLocation[0]][playerLocation[1]] != 0, "No Room in that location");
+
             int newRoom = RoomGrid[playerLocation[0]][playerLocation[1]];
             Directions entryDirection = default;
             switch (Direction)
@@ -108,6 +107,8 @@ namespace DungeonExplorer
             }
 
             List<Directions> availableDirections = new List<Directions>();
+
+
 
             if (PlayerLocation[0] > 0 && RoomGrid[PlayerLocation[0] - 1][PlayerLocation[1]] != 0) availableDirections.Add(Directions.North);
             if (PlayerLocation[0] < 2 && RoomGrid[PlayerLocation[0] + 1][PlayerLocation[1]] != 0) availableDirections.Add(Directions.South);
@@ -154,6 +155,9 @@ namespace DungeonExplorer
             }
         }
 
+        /// <summary>
+        /// Populates a 3x3 grid for the room locations, then assigns the rooms to locations on the grid connected to another room.
+        /// </summary>
         private void CreateConnections()
         {
             List<int[]> RoomLocations = new List<int[]>();
