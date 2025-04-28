@@ -21,7 +21,7 @@ namespace DungeonExplorer
         public Game()
         {
             // Initialize the game with one room and one player after getting their name
-            currentRoom = new Room(0);
+            //currentRoom = new GameMap(0);
             Testing.TestRoom(currentRoom);
             Console.Write("Please Enter your name: ");
             string name = Console.ReadLine();
@@ -37,7 +37,7 @@ namespace DungeonExplorer
             // uses a boolean variable to initialize the loop
             GameRunning = true;
             // loops while the game is running
-            while (GameRunning)
+            /*while (GameRunning)
             {
                 // First gets and writes the description of the room
                 Console.WriteLine(currentRoom.getDescription());
@@ -50,7 +50,7 @@ namespace DungeonExplorer
                 {
                     // gets the user input and passes it to the action method below
                     string userInput = Console.ReadLine();
-                    string result = action(userInput.ToLower());
+                    //string result = action(userInput.ToLower());
                     // once the result of the actionn has been gotten, confirm if they are moving to a new room or exiting the game.
                     switch (result)
                     {
@@ -65,7 +65,7 @@ namespace DungeonExplorer
                             break;
                     }
                 }
-            }
+            }*/
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace DungeonExplorer
         /// <returns>
         /// If a move action has been taken or if the user wants to exit.
         /// </returns>
-        private string action(string userInput)
+        /*private string action(string userInput)
         {
             // gets the user input from the main game loop and translates it to a action to be passed back to the main game loop.
             // currently when moving, can move any direction and will generate a new random room.
@@ -162,7 +162,7 @@ namespace DungeonExplorer
                     break;
             }
             return output;
-        }
+        }*/
 
         public void GameOver()
         {

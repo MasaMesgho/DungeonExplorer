@@ -14,7 +14,7 @@ namespace DungeonExplorer
         final
     }
 
-    public class Room
+    public abstract class Room
     {
 
         // this class contains all information and actions for rooms
@@ -30,20 +30,7 @@ namespace DungeonExplorer
         /// <param name="roomType">
         /// The Type of room if specifying, leave blank if not specifying.
         /// </param>
-        public Room(int tempRoomType = -1)
-        {
-            // initializes the room
-            // generates a random room ID if one is not specified
-            if (tempRoomType == -1) { roomType = rnd.Next(1, 4); }
-            // uses the set description and set item methods
-            // makes sutre the room type is in range.
-            Debug.Assert(roomType < 5 && roomType >= 0, "Room Type out of range.");
-            setDescription();
-            setItems();
-            // sets this room to not have been searched.
-            this.roomChecked = false;
-
-        }
+        public Room() { }
         /// <summary>
         /// Adds Items to the Rooms Inventory.
         /// </summary>

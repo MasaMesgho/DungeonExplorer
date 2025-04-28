@@ -68,7 +68,67 @@ namespace DungeonExplorer
             Directions entryDirection = Directions.North;
             if (RoomGrid[0][1] > 1) availableDirections.Add(Directions.West);
             if (RoomGrid[1][2] > 1) availableDirections.Add(Directions.South);
-            return new EntryRoom(entryDirection,availableDirections);
+            return new EntryRoom(entryDirection,availableDirections, false);
+        }
+
+        public Room Move(Directions Direction)
+        {
+            switch (Direction)
+            {
+                case Directions.North:
+                    PlayerLocation[0]--;
+                    break;
+                case Directions.South:
+                    PlayerLocation[0]++;
+                    break;
+                case Directions.West:
+                    PlayerLocation[1]--;
+                    break;
+                case Directions.East:
+                    PlayerLocation[1]++;
+                    break;
+            }
+
+            int newRoom = RoomGrid[playerLocation[0]][playerLocation[1]];
+            Directions entryDirection = default;
+            switch (Direction)
+            {
+                case Directions.North:
+                    entryDirection = Directions.South;
+                    break;
+                case Directions.South:
+                    entryDirection = Directions.North;
+                    break;
+                case Directions.West:
+                    entryDirection = Directions.East;
+                    break;
+                case Directions.East:
+                    entryDirection = Directions.West;
+                    break;
+            }
+
+            List<Directions> availableDirections = new List<Directions>();
+
+            if (PlayerLocation[0] > 0 && RoomGrid[PlayerLocation[0] - 1][PlayerLocation[1]] != 0) availableDirections.Add(Directions.North);
+            if (PlayerLocation[0] < 2 && RoomGrid[PlayerLocation[0] + 1][PlayerLocation[1]] != 0) availableDirections.Add(Directions.South);
+            if (PlayerLocation[1] < 2 && RoomGrid[PlayerLocation[0]][PlayerLocation[1] + 1] != 0) availableDirections.Add(Directions.East);
+            if (PlayerLocation[2] > 0 && RoomGrid[PlayerLocation[0]][PlayerLocation[1] - 1] != 0) availableDirections.Add(Directions.West);
+            bool visitedCheck = (visited.Contains(playerLocation));
+            switch (newRoom)
+            {
+                case 1:
+                    return new EntryRoom(entryDirection, availableDirections, visitedCheck);
+                case 2:
+                    return new Hall(entryDirection, availableDirections, visitedCheck);
+                case 3:
+                    return new Dungeon(entryDirection, availableDirections, visitedCheck);
+                case 4:
+                    return new TreasureRoom(entryDirection, availableDirections, visitedCheck);
+                case 5:
+                    return new FinalRoom(entryDirection, availableDirections, visitedCheck);
+                default:
+                    return default;
+            }
         }
 
         /// <summary>

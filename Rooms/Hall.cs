@@ -8,5 +8,9 @@ namespace DungeonExplorer
 {
     internal class Hall : Room
     {
+        public Hall(Directions EntryDirection, List<Directions> AvailableDirections, bool Visited)
+        {
+
+        }
     }
 }

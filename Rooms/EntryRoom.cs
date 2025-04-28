@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    internal class EntryRoom : Room
+    public class EntryRoom : Room
     {
+        public EntryRoom(Directions EntryDirection, List<Directions> AvailableDirections, bool Visited)
+        {
+
+        }
     }
 }

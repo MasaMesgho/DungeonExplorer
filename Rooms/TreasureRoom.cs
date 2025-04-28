@@ -8,5 +8,9 @@ namespace DungeonExplorer
 {
     internal class TreasureRoom : Room
     {
+        public TreasureRoom(Directions EntryDirection, List<Directions> AvailableDirections, bool Visited)
+        {
+
+        }
     }
 }

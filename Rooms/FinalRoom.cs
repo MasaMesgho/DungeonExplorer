@@ -8,5 +8,9 @@ namespace DungeonExplorer
 {
     internal class FinalRoom : Room
     {
+        public FinalRoom(Directions EntryDirection, List<Directions> AvailableDirections, bool Visited)
+        {
+
+        }
     }
 }
