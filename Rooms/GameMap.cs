@@ -44,7 +44,7 @@ namespace DungeonExplorer
         public GameMap()
         {
 
-            floor = 1;
+            floor = 0;
             GenerateRooms();
             CreateConnections();
             PlayerLocation[0] = 0;
@@ -64,7 +64,11 @@ namespace DungeonExplorer
             PlayerLocation[0] = 0;
             PlayerLocation[1] = 2;
             visited.Add(playerLocation);
-            return new EntryRoom();
+            List<Directions> availableDirections = new List<Directions>();
+            Directions entryDirection = Directions.North;
+            if (RoomGrid[0][1] > 1) availableDirections.Add(Directions.West);
+            if (RoomGrid[1][2] > 1) availableDirections.Add(Directions.South);
+            return new EntryRoom(entryDirection,availableDirections);
         }
 
         /// <summary>
