@@ -28,7 +28,8 @@ namespace DungeonExplorer
         private int Floor;
         public int floor
         {
-            get; private set;
+            get { return Floor; } 
+            private set { Floor = value; }
         }
 
         private List<RoomType> Rooms = new List<RoomType>();
@@ -43,7 +44,7 @@ namespace DungeonExplorer
         public GameMap()
         {
 
-            Floor = 1;
+            floor = 1;
             GenerateRooms();
             CreateConnections();
             PlayerLocation[0] = 0;
@@ -73,14 +74,14 @@ namespace DungeonExplorer
         {
             for (int i = 0; i < 5; i++)
             {
-                int chance = Program.rnd.Next(0, 9);
+                int chance = Program.rnd.Next(0, 10);
                 if (chance < 4)
                 {
-                    Rooms.Add(RoomType.dungeon);
+                    Rooms.Add(RoomType.hall);
                 }
                 else if (chance < 9 || Rooms.Contains(RoomType.treasure))
                 {
-                    Rooms.Add(RoomType.hall);
+                    Rooms.Add(RoomType.dungeon);
                 }
                 else
                 {
@@ -110,35 +111,76 @@ namespace DungeonExplorer
             {
                 int RoomConnection;
                 List<int[]> availableRooms = RoomLocations;
+                List<Directions> availableDirections = new List<Directions>();
                 while (true)
                 {
-                    RoomConnection = Program.rnd.Next(0, availableRooms.Count - 1);
-                    List<Directions> availableDirections = new List<Directions>();
-                    if (RoomLocations[RoomConnection][0] < 1 && roomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] == 0) availableDirections.Add(Directions.North);
-                    if (RoomLocations[RoomConnection][0] >= 1 && roomGrid[availableRooms[RoomConnection][0] - 1][availableRooms[RoomConnection][1]] == 0) availableDirections.Add(Directions.South);
-                    if (RoomLocations[RoomConnection][1] < 1 && roomGrid[availableRooms[RoomConnection][0]][availableRooms[RoomConnection][1] +1] == 0) availableDirections.Add(Directions.East);
+                    RoomConnection = Program.rnd.Next(0, availableRooms.Count);
+                    if (RoomLocations[RoomConnection][0] <= 1 && roomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] == 0) availableDirections.Add(Directions.South);
+                    if (RoomLocations[RoomConnection][0] >= 1 && roomGrid[availableRooms[RoomConnection][0] - 1][availableRooms[RoomConnection][1]] == 0) availableDirections.Add(Directions.North);
+                    if (RoomLocations[RoomConnection][1] <= 1 && roomGrid[availableRooms[RoomConnection][0]][availableRooms[RoomConnection][1] +1] == 0) availableDirections.Add(Directions.East);
                     if (RoomLocations[RoomConnection][1] >= 1 && roomGrid[availableRooms[RoomConnection][0]][availableRooms[RoomConnection][1] - 1] == 0) availableDirections.Add(Directions.West);
                     if (availableDirections.Count > 0) break;
                     availableRooms.RemoveAt(RoomConnection);
                 }
+                int chance = Program.rnd.Next(0, availableDirections.Count);
+                Directions Direction = availableDirections[chance];
+                int x = 2;
+                int y = 2;
 
-                roomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 1;
+                switch (Direction)
+                {
+                    case Directions.North:
+                        y = availableRooms[RoomConnection][0] - 1;
+                        x = availableRooms[RoomConnection][1];
+                        break;
+                    case Directions.South:
+                        y = availableRooms[RoomConnection][0] + 1;
+                        x = availableRooms[RoomConnection][1];
+                        break;
+                    case Directions.East:
+                        y = availableRooms[RoomConnection][0];
+                        x = availableRooms[RoomConnection][1] + 1;
+                        break;
+                    case Directions.West:
+                        y = availableRooms[RoomConnection][0];
+                        x = availableRooms[RoomConnection][1] - 1;
+                        break;
+                }
+                int[] location = new int[2];
+                location[0] = y;
+                location[1] = x;
+                RoomLocations.Add(location);
+
                 switch (room)
                 {
                     case RoomType.hall:
-                        roomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 2;
-                        break;
-
-                    case RoomType.treasure:
-                        roomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 3;
+                        roomGrid[y][x] = 2;
                         break;
 
                     case RoomType.dungeon:
-                        roomGrid[availableRooms[RoomConnection][0] + 1][availableRooms[RoomConnection][1]] = 4;
+                        roomGrid[y][x] = 3;
+                        break;
+
+                    case RoomType.treasure:
+                        roomGrid[y][x] = 4;
                         break;
                 }
 
             }
+
+            while (true)
+            {
+                // places the final room
+                // tries to place it in the bottom right corner of the grid
+                // checks available spaces and places it in the nearest space.
+                if (RoomGrid[2][0] == 0 && (RoomGrid[1][0] > 0 || RoomGrid[2][1] > 0)) RoomGrid[2][0] = 5;
+                else if (RoomGrid[2][1] == 0) RoomGrid[2][1] = 5;
+                else if (RoomGrid[1][0] == 0) RoomGrid[1][0] = 5;
+                else if (RoomGrid[2][2] == 0) RoomGrid[2][2] = 5;
+                else RoomGrid[0][0] = 5; // if none of the above spaces are available this space will be available due to it having 6 rooms in a 3x3 grid already.
+                break;
+            }
+
         }
 
     }
