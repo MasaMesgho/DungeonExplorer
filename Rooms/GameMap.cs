@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
+    // directions to make passing direction variables easier
     public enum Directions
     {
         North,
@@ -15,17 +16,23 @@ namespace DungeonExplorer
         South
     }
 
+    // This class defines a game map, including features for generating floors and getting the current room
+    // as well as movement between rooms based on the player location
     public class GameMap
     {
-        private int[] PlayerLocation = new int[2];
-        public int[] playerLocation
-        {
-            get { return PlayerLocation; }
-            private set { PlayerLocation = value; }
-        }
+        // initial variables are defined here and populated elsewhere
+        // private is mostly used for encapsulation but publics are available for attributes to be tested/ used elsewhere
 
+        // stores the layers location within the map, uses y and x locations
+        // private only as this only needs to be accessed within the class
+        private int[] PlayerLocation = new int[2];
+
+        // stores visited locations
+        // private as this only needs to be accessed within the class
         private List<int[]> visited = new List<int[]>();
 
+        // stores which floor the player is currently on
+        // has a public get as the current floor is needed outside the class
         private int Floor;
         public int floor
         {
@@ -33,8 +40,11 @@ namespace DungeonExplorer
             private set { Floor = value; }
         }
 
+        // holds a list of 5 rooms which are generated within the class and used 
         private List<RoomType> Rooms = new List<RoomType>();
 
+        //holds a 3x3 grid for the rooms, uses a private for use within the class
+        //has a public get as it is used in the testing class to ensure floors are generated successfully
         private List<int[]> RoomGrid = new List<int[]>();
         public List<int[]> roomGrid
         {
@@ -42,32 +52,48 @@ namespace DungeonExplorer
             private set { RoomGrid = value; }
         }
 
+        // opens a new map, newfloor needs to be called so that the initial room can be provided as a constructor is not the place for returning objects.
         public GameMap()
         {
             floor = 0;
         }
 
         /// <summary>
-        /// Clears the Floor and rebuilds it
+        /// Clears the Floor and rebuilds it using inbuilt methods
         /// </summary>
         public Room NewFloor()
         {
             Floor = Floor + 1;
             Rooms.Clear();
+            visited.Clear();
             GenerateRooms();
             CreateConnections();
+            // sets the player location the the starting room
             PlayerLocation[0] = 0;
             PlayerLocation[1] = 2;
-            visited.Add(playerLocation);
+            // adds the starting room to visited
+            visited.Add(PlayerLocation);
+
+            // stores the available directions from the starting room
             List<Directions> availableDirections = new List<Directions>();
+
+            // sets the entry direction from north as rooms need an entry direction.
             Directions entryDirection = Directions.North;
+
+            // gets the available directions from the starting room and stores them
             if (RoomGrid[0][1] > 1) availableDirections.Add(Directions.West);
             if (RoomGrid[1][2] > 1) availableDirections.Add(Directions.South);
+            // returns the entry room
             return new EntryRoom(entryDirection,availableDirections, false);
         }
-
+        /// <summary>
+        /// Moves the player in the specified direction
+        /// </summary>
+        /// <param name="Direction"> The direction the player is moving </param>
+        /// <returns>the room the player has moved too </returns>
         public Room Move(Directions Direction)
         {
+            // based on the direction, moves the players location
             switch (Direction)
             {
                 case Directions.North:
@@ -83,13 +109,18 @@ namespace DungeonExplorer
                     PlayerLocation[1]++;
                     break;
             }
+            // here to make sure the player location is valid
+            Debug.Assert(PlayerLocation[0] >=0 && PlayerLocation[0] <=2, "Y axis out of range.");
+            Debug.Assert(PlayerLocation[1] >= 0 && PlayerLocation[1] <= 2, "X axis out of range.");
+            // here so that there is a room at that location
+            Debug.Assert(RoomGrid[PlayerLocation[0]][PlayerLocation[1]] != 0, "No Room in that location");
 
-            Debug.Assert(PlayerLocation[0] >=0 && playerLocation[0] <=2, "Y axis out of range.");
-            Debug.Assert(PlayerLocation[1] >= 0 && playerLocation[1] <= 2, "X axis out of range.");
-            Debug.Assert(RoomGrid[playerLocation[0]][playerLocation[1]] != 0, "No Room in that location");
+            // gets the room ID to be generated from the players location
+            int newRoom = RoomGrid[PlayerLocation[0]][PlayerLocation[1]];
 
-            int newRoom = RoomGrid[playerLocation[0]][playerLocation[1]];
+            // Entry Direction variable to be given to the new room
             Directions entryDirection = default;
+            // flips the direction that the user moved to the room from
             switch (Direction)
             {
                 case Directions.North:
@@ -106,15 +137,22 @@ namespace DungeonExplorer
                     break;
             }
 
+            // holds a list of room connections based on the new player location
             List<Directions> availableDirections = new List<Directions>();
 
 
-
+            // checks the adjacent spaces to the players location and adds any rooms found as a available direction
             if (PlayerLocation[0] > 0 && RoomGrid[PlayerLocation[0] - 1][PlayerLocation[1]] != 0) availableDirections.Add(Directions.North);
             if (PlayerLocation[0] < 2 && RoomGrid[PlayerLocation[0] + 1][PlayerLocation[1]] != 0) availableDirections.Add(Directions.South);
             if (PlayerLocation[1] < 2 && RoomGrid[PlayerLocation[0]][PlayerLocation[1] + 1] != 0) availableDirections.Add(Directions.East);
             if (PlayerLocation[2] > 0 && RoomGrid[PlayerLocation[0]][PlayerLocation[1] - 1] != 0) availableDirections.Add(Directions.West);
-            bool visitedCheck = (visited.Contains(playerLocation));
+            // sees if the user has been in this location before
+            bool visitedCheck = (visited.Contains(PlayerLocation));
+
+            // if the user has not been to this location before, adds 
+            if (!visitedCheck) visited.Add(PlayerLocation);
+
+            // generates a new room and returns it
             switch (newRoom)
             {
                 case 1:
@@ -133,13 +171,16 @@ namespace DungeonExplorer
         }
 
         /// <summary>
-        /// Generates the Rooms for the Map
+        /// Generates 5 Rooms for the Map to be used in creating connections
         /// </summary>
         private void GenerateRooms()
         {
+            // runs 5 times
             for (int i = 0; i < 5; i++)
             {
                 int chance = Program.rnd.Next(0, 10);
+                // adds a random room
+                // a max of 1 treasure room can be generated
                 if (chance < 4)
                 {
                     Rooms.Add(RoomType.hall);
@@ -160,7 +201,9 @@ namespace DungeonExplorer
         /// </summary>
         private void CreateConnections()
         {
+            // creates a list of the room locations to be used when connecting rooms.
             List<int[]> RoomLocations = new List<int[]>();
+            // generates a 3x3 grid of 0
             for (int i = 0; i < 3; i++)
             {
                 int[] tempInts = new int[3];
@@ -170,16 +213,25 @@ namespace DungeonExplorer
                 }
                 RoomGrid.Add(tempInts);
             }
+            // sets the top right of the grid to be the starting room ID 1 and adds it to the room locations
             roomGrid[0][2] = 1;
             int[] newLocation = new int[2];
             newLocation[0] = 0;
             newLocation[1] = 2;
             RoomLocations.Add(newLocation);
+
+            // adds each room generated by GenerateRooms to the 3x3 grid
+            // adds them next to already added rooms
             foreach (RoomType room in Rooms)
             {
+                // int to store which room is selected as the one the new room will be placed next to.
                 int RoomConnection;
+                // new list for storing rooms that can be connected to
+                // this is different as some rooms need to be removed as they cannot be connected to due to no free space.
                 List<int[]> availableRooms = RoomLocations;
+                // list to store the available directions the connection could be in.
                 List<Directions> availableDirections = new List<Directions>();
+                // while loop to make sure the room has a valid space before closing the loop.
                 while (true)
                 {
                     RoomConnection = Program.rnd.Next(0, availableRooms.Count);
