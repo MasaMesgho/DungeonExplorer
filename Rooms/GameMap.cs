@@ -13,7 +13,8 @@ namespace DungeonExplorer
         North,
         West,
         East,
-        South
+        South,
+        Down
     }
 
     // This class defines a game map, including features for generating floors and getting the current room
@@ -84,7 +85,7 @@ namespace DungeonExplorer
             if (RoomGrid[0][1] > 1) availableDirections.Add(Directions.West);
             if (RoomGrid[1][2] > 1) availableDirections.Add(Directions.South);
             // returns the entry room
-            return new EntryRoom(entryDirection,availableDirections, false);
+            return new EntryRoom(entryDirection,availableDirections, false, floor);
         }
         /// <summary>
         /// Moves the player in the specified direction
@@ -156,15 +157,15 @@ namespace DungeonExplorer
             switch (newRoom)
             {
                 case 1:
-                    return new EntryRoom(entryDirection, availableDirections, visitedCheck);
+                    return new EntryRoom(entryDirection, availableDirections, visitedCheck, floor);
                 case 2:
-                    return new Hall(entryDirection, availableDirections, visitedCheck);
+                    return new Hall(entryDirection, availableDirections, visitedCheck, floor);
                 case 3:
-                    return new Dungeon(entryDirection, availableDirections, visitedCheck);
+                    return new Dungeon(entryDirection, availableDirections, visitedCheck, floor);
                 case 4:
-                    return new TreasureRoom(entryDirection, availableDirections, visitedCheck);
+                    return new TreasureRoom(entryDirection, availableDirections, visitedCheck, floor);
                 case 5:
-                    return new FinalRoom(entryDirection, availableDirections, visitedCheck);
+                    return new FinalRoom(entryDirection, availableDirections, visitedCheck, floor);
                 default:
                     return default;
             }

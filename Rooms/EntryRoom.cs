@@ -8,9 +8,18 @@ namespace DungeonExplorer
 {
     public class EntryRoom : Room
     {
-        public EntryRoom(Directions EntryDirection, List<Directions> AvailableDirections, bool Visited)
+        /// <summary>
+        /// Generates a instance of the Entry Room
+        /// </summary>
+        /// <param name="EntryDir">The entry direction</param>
+        /// <param name="AvailableDirections">the aavailable directions to move from</param>
+        /// <param name="Visited">if the room has been visited</param>
+        public EntryRoom(Directions EntryDir, List<Directions> AvailableDirections, bool Visited, int floor)
         {
-            description = "a Dark Empty Room, it marks the beginning of the floor.";
+            description = "A Dark Dungeon, old traces of prisoners, long gone remain.";
+            EntryDirection = EntryDir;
+            AddExits(AvailableDirections);
+            EmptyRoom = Visited;
         }
     }
 }

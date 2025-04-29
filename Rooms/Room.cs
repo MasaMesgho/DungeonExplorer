@@ -20,6 +20,7 @@ namespace DungeonExplorer
         left,
         right,
         forward,
+        down,
         None
     }
 
@@ -31,7 +32,7 @@ namespace DungeonExplorer
         protected string Description;
         public string description;
 
-        protected List<ExitDirection> Exits;
+        protected List<ExitDirection> Exits = new List<ExitDirection>();
 
         protected RoomType Type;
         public RoomType type
@@ -52,6 +53,7 @@ namespace DungeonExplorer
         }
         protected DropTable dropTable;
 
+        public bool EmptyRoom { get; protected set; }
 
         public Room() { }
 
@@ -159,6 +161,7 @@ namespace DungeonExplorer
                 default:
                     break;
             }
+            if (exit == ExitDirection.down) direction = Directions.Down;
 
             return direction;
         }
