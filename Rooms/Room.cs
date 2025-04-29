@@ -32,7 +32,7 @@ namespace DungeonExplorer
         protected string Description;
         public string description;
 
-        protected List<ExitDirection> Exits = new List<ExitDirection>();
+        public List<ExitDirection> Exits { get; protected set; } = new List<ExitDirection>();
 
         protected RoomType Type;
         public RoomType type
