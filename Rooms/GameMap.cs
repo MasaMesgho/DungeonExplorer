@@ -109,6 +109,8 @@ namespace DungeonExplorer
                 case Directions.East:
                     PlayerLocation[1]++;
                     break;
+                case Directions.Down:
+                    return NewFloor();
             }
             // here to make sure the player location is valid
             Debug.Assert(PlayerLocation[0] >=0 && PlayerLocation[0] <=2, "Y axis out of range.");
