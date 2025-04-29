@@ -6,20 +6,11 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    internal class FinalRoom : Room, ILootable
+    internal class FinalRoom : Room
     {
         public FinalRoom(Directions EntryDirection, List<Directions> AvailableDirections, bool Visited)
         {
 
-        }
-
-        /// <summary>
-        /// Loots the room
-        /// </summary>
-        /// <returns> all items in the room </returns>
-        public Item[] Loot()
-        {
-            return RoomInventory;
         }
     }
 }

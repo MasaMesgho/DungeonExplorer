@@ -20,7 +20,6 @@ namespace DungeonExplorer
             // starts the game loop
             Testing.TestMap();
             Game game = new Game();
-            Testing.TestGame(game);
             game.Start();
             Console.WriteLine("See you next time Space Cowboy...");
             Console.Write("Press any key to close.");

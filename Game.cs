@@ -23,11 +23,9 @@ namespace DungeonExplorer
         {
             // Initialize the game with one room and one player after getting their name
             //currentRoom = new GameMap(0);
-            Testing.TestRoom(currentRoom);
             Console.Write("Please Enter your name: ");
             string name = Console.ReadLine();
             player = new Player(name);
-            Testing.TestPlayer(player);
         }
 
         /// <summary>

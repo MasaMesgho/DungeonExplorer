@@ -6,6 +6,7 @@ using System.Diagnostics;
 
 namespace DungeonExplorer
 {
+    // stores room types for use outside of functions
     public enum RoomType
     {
         dungeon,
@@ -20,10 +21,17 @@ namespace DungeonExplorer
         // this class contains all information and actions for rooms
         // needed variables are below with a rng generator (rnd)
         private string description;
-        private int roomType;
-        protected Item[] RoomInventory;
-        private Random rnd = new Random();
-        private bool roomChecked;
+        private RoomType roomType;
+
+        // room inventory can be gotten from outside the class
+        // so has a protected set and a public get
+        protected List<Item> RoomInventory;
+        public List<Item> roomInventory
+        { 
+            get { return RoomInventory; }
+            protected set { RoomInventory = value; }
+        }
+        protected DropTable dropTable;
         /// <summary>
         /// Generates the Room with random attributes if not specified.
         /// </summary>
@@ -31,86 +39,37 @@ namespace DungeonExplorer
         /// The Type of room if specifying, leave blank if not specifying.
         /// </param>
         public Room() { }
-        /// <summary>
-        /// Adds Items to the Rooms Inventory.
-        /// </summary>
-        private void setItems()
-        {
 
-        }
         /// <summary>
-        /// Sets the Rooms description based on the Room Type.
+        /// fills the room with items from the drop table
         /// </summary>
-        private void setDescription()
+        /// <param name="amount">the amount of chances for a drop </param>
+        public void GenerateItems(int amount)
         {
-            // gets the room ID and assigns the correct description based on the room entered.
-            switch (this.roomType)
+            // tries for an item for each amount given
+            for (int i = 0; i < amount; i++)
             {
-                case 0:
-                    this.description = "You arrive at the great Entryway to the dungeon" +
-                        "\nloose stone and crubling pillars fill you with Anxiety, but the allure of Treasure draws you in" +
-                        "\njust inside you see three passages, left, right and forwards, which will you choose?";
-                    break;
-                case 1:
-                    this.description = "A great Hall, " +
-                        "filled with forgotten crumbling pillars, " +
-                        "three Doorways lead deeper in, left, right and forwards";
-                    break;
-                case 2:
-                    this.description = "A crumbling graveyard, " +
-                        "littered with broken caskets, " +
-                        "three Doorways lead deeper in, left, right and forwards";
-                    break;
-                case 3:
-                    this.description = "A abandoned tight fitting corridor, " +
-                        "crumbling stone walls mark the years passed in this forgotten place, " +
-                        "three Doorways lead deeper in, left, right and forwards";
-                    break;
-                case 4:
-                    this.description = "A silent dining room, " +
-                        "rotting tables and scattered cutlery the only signs of time you can see, " +
-                        "three Doorways lead deeper in, left, right and forwards";
-                    break;
-
-
+                // gets a drop from the table, if it is an item, adds it to the inventory
+                Item item = dropTable.GetDrop();
+                if (item != null) RoomInventory.Add(item);
             }
         }
         /// <summary>
-        /// Gets the current description of the room.
+        /// adds a item to the rooms inventory
         /// </summary>
-        /// <returns>
-        /// The Rooms description in string
-        /// </returns>
-        public string getDescription()
+        /// <param name="item"> the item being added </param>
+        public void AddItem(Item item)
         {
-            // if the description is requested, sends the description.
-            return this.description;
+            roomInventory.Add(item);
         }
         /// <summary>
-        /// Gets the Items in the rooms inventory if the room has not been checked.
+        /// removes an item from the rooms inventory
         /// </summary>
-        /// <returns>
-        /// The Items in the rooms inventory if it has not been checked.
-        /// Returns checked if it has already been checked.
-        /// </returns>
-        public Item[] getItems(bool test = false)
+        /// <param name="item"> the item being removed </param>
+        public void RemoveItem(Item item)
         {
-            //creates a temporary dictionary to return if the room has already been searched
-            Item[] temp;
-
-            // if this is called as a test, just returns the rooms description
-            if (test) { return RoomInventory; }
-            // if the room is searched, first check if the room has been searched already
-            if (roomChecked)
-            {
-                // adds a checked item to the dictionary which is then handled in the game class
-                return null;
-            }
-            
-            // check the roomChecked variable so it can't be searched twice
-            roomChecked = true;
-            // return every item in the room (will return empty if the room has no items)
-            return RoomInventory;
+            roomInventory.Remove(item);
         }
+
     }
 }
