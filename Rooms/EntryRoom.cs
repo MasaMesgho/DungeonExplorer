@@ -10,7 +10,7 @@ namespace DungeonExplorer
     {
         public EntryRoom(Directions EntryDirection, List<Directions> AvailableDirections, bool Visited)
         {
-
+            description = "a Dark Empty Room, it marks the beginning of the floor.";
         }
     }
 }

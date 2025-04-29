@@ -13,8 +13,11 @@ namespace DungeonExplorer
 
         // has public get for testing purposes and private set so it can only be changed by the game class
         // for encapsulation
-        public Player player { get; private set; }
-        public Room currentRoom { get; private set; }
+        private Player player;
+        private Room currentRoom;
+        private GameMap map = new GameMap();
+
+        private List<Creature> enemyList;
 
         /// <summary>
         /// Initialises the main game loop.
@@ -22,7 +25,7 @@ namespace DungeonExplorer
         public Game()
         {
             // Initialize the game with one room and one player after getting their name
-            //currentRoom = new GameMap(0);
+            currentRoom = map.NewFloor();
             Console.Write("Please Enter your name: ");
             string name = Console.ReadLine();
             player = new Player(name);
@@ -36,35 +39,17 @@ namespace DungeonExplorer
             // uses a boolean variable to initialize the loop
             GameRunning = true;
             // loops while the game is running
-            /*while (GameRunning)
+            while (GameRunning)
             {
                 // First gets and writes the description of the room
-                Console.WriteLine(currentRoom.getDescription());
+                Console.WriteLine(currentRoom.description);
                 // lets the user know their commands
                 Console.WriteLine("The commands are: " +
                     "left, forward, right, inventory, use, health, search, exit");
                 // use a while loop to get input from a user until a moving or exit command is used.
                 bool moving = false;
-                while (!moving)
-                {
-                    // gets the user input and passes it to the action method below
-                    string userInput = Console.ReadLine();
-                    //string result = action(userInput.ToLower());
-                    // once the result of the actionn has been gotten, confirm if they are moving to a new room or exiting the game.
-                    switch (result)
-                    {
-                        case "false":
-                            break;
-                        case "true":
-                            moving = true;
-                            break;
-                        case "exit":
-                            moving = true;
-                            GameRunning = false;
-                            break;
-                    }
-                }
-            }*/
+                GameRunning = false;
+            }
         }
 
         /// <summary>

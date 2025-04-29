@@ -15,13 +15,32 @@ namespace DungeonExplorer
         final
     }
 
+    public enum ExitDirection
+    {
+        left,
+        right,
+        forward,
+        None
+    }
+
     public abstract class Room
     {
 
         // this class contains all information and actions for rooms
         // needed variables are below with a rng generator (rnd)
-        private string description;
-        private RoomType roomType;
+        protected string Description;
+        public string description;
+
+        protected List<ExitDirection> Exits;
+
+        protected RoomType Type;
+        public RoomType type
+        {
+            get { return Type; }
+            protected set { Type = value; }
+        }
+
+        public Directions EntryDirection { get; protected set; }
 
         // room inventory can be gotten from outside the class
         // so has a protected set and a public get
@@ -32,12 +51,8 @@ namespace DungeonExplorer
             protected set { RoomInventory = value; }
         }
         protected DropTable dropTable;
-        /// <summary>
-        /// Generates the Room with random attributes if not specified.
-        /// </summary>
-        /// <param name="roomType">
-        /// The Type of room if specifying, leave blank if not specifying.
-        /// </param>
+
+
         public Room() { }
 
         /// <summary>
@@ -69,6 +84,83 @@ namespace DungeonExplorer
         public void RemoveItem(Item item)
         {
             roomInventory.Remove(item);
+        }
+
+        /// <summary>
+        /// adds the exits to a room
+        /// </summary>
+        /// <param name="entryDirection"> the entry direction</param>
+        /// <param name="availableDirections"> the available directions from the room </param>
+        public void AddExits(List<Directions> availableDirections)
+        {
+            // uses the entry direction as a reference point
+            // adds the exits based on available directions from the entry direction
+            switch (EntryDirection)
+            {
+                case Directions.North:
+                    if (availableDirections.Contains(Directions.East)) Exits.Add(ExitDirection.left);
+                    if (availableDirections.Contains(Directions.South)) Exits.Add(ExitDirection.forward);
+                    if (availableDirections.Contains(Directions.West)) Exits.Add(ExitDirection.right);
+                    break;
+                case Directions.South:
+                    if (availableDirections.Contains(Directions.West)) Exits.Add(ExitDirection.left);
+                    if (availableDirections.Contains(Directions.North)) Exits.Add(ExitDirection.forward);
+                    if (availableDirections.Contains(Directions.East)) Exits.Add(ExitDirection.right);
+                    break;
+                case Directions.East:
+                    if (availableDirections.Contains(Directions.South)) Exits.Add(ExitDirection.left);
+                    if (availableDirections.Contains(Directions.West)) Exits.Add(ExitDirection.forward);
+                    if (availableDirections.Contains(Directions.North)) Exits.Add(ExitDirection.right);
+                    break;
+                case Directions.West:
+                    if (availableDirections.Contains(Directions.North)) Exits.Add(ExitDirection.left);
+                    if (availableDirections.Contains(Directions.East)) Exits.Add(ExitDirection.forward);
+                    if (availableDirections.Contains(Directions.South)) Exits.Add(ExitDirection.right);
+                    break;
+                default:
+                    break;
+            }
+            if (Exits.Count == 0) Exits.Add(ExitDirection.None);
+        }
+
+        /// <summary>
+        /// finds the exit direction from the given directions
+        /// </summary>
+        /// <param name="entryDirection"> the entry direction</param>
+        /// <param name="availableDirections"> the available directions from the room </param>
+        public Directions GetExitDirection(ExitDirection exit)
+        {
+            // uses default so that it can be returned
+            Directions direction = default;
+
+            // based on the entry direction, converts the exit chosen to a direction
+            switch (EntryDirection)
+            {
+                case Directions.North:
+                    if (exit == ExitDirection.left) direction = Directions.East;
+                    if (exit == ExitDirection.forward) direction = Directions.South;
+                    if (exit == ExitDirection.right) direction = Directions.West;
+                    break;
+                case Directions.South:
+                    if (exit == ExitDirection.left) direction = Directions.West;
+                    if (exit == ExitDirection.forward) direction = Directions.North;
+                    if (exit == ExitDirection.right) direction = Directions.East;
+                    break;
+                case Directions.East:
+                    if (exit == ExitDirection.left) direction = Directions.South;
+                    if (exit == ExitDirection.forward) direction = Directions.West;
+                    if (exit == ExitDirection.right) direction = Directions.North;
+                    break;
+                case Directions.West:
+                    if (exit == ExitDirection.left) direction = Directions.North;
+                    if (exit == ExitDirection.forward) direction = Directions.East;
+                    if (exit == ExitDirection.right) direction = Directions.South;
+                    break;
+                default:
+                    break;
+            }
+
+            return direction;
         }
 
     }
