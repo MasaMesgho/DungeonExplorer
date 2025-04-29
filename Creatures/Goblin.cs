@@ -22,15 +22,16 @@ namespace DungeonExplorer
         /// <param name="level"> The enemy Level to be generated </param>
         public Goblin(int level) 
         {
-            // sets the resistance to 0 and sets the max health to 10 + 5 per level
-            // also sets the damage to 3 + level * 2
+            // scales max health and damage based on level
             Resistance = 0;
             maxHealth = 10 + (level * 5);
             Damage = 3 + (level * 2);
             health = maxHealth;
 
+            // creates an instance of the droptable class for the goblin
             Droppable = new DropTable(TableType.Enemy, level);
 
+            // changes the slimes name based on level to make it seem like there are different types
             if (level < 5)
             {
                 name = "Goblin";
@@ -77,6 +78,10 @@ namespace DungeonExplorer
             else return false;
         }
 
+        /// <summary>
+        /// potentially drops an item from the goblins loot-table
+        /// </summary>
+        /// <returns>an item or null </returns>
         public Item Drops()
         {
             return Droppable.GetDrop();
