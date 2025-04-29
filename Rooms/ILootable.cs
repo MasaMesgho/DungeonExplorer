@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    internal class Hall : Room, ILootable
+    internal interface ILootable
     {
-        public Hall(Directions EntryDirection, List<Directions> AvailableDirections, bool Visited)
-        {
-
-        }
+        Item[] Loot();
     }
 }

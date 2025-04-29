@@ -21,7 +21,7 @@ namespace DungeonExplorer
         // needed variables are below with a rng generator (rnd)
         private string description;
         private int roomType;
-        private Dictionary<string,int> roomInventory = new Dictionary<string, int>();
+        protected Item[] RoomInventory;
         private Random rnd = new Random();
         private bool roomChecked;
         /// <summary>
@@ -36,49 +36,7 @@ namespace DungeonExplorer
         /// </summary>
         private void setItems()
         {
-            // Checks the room ID then assigns an item chance, and the amount of tries to get items.
-            int amount = 0;
-            int chance = 0;
-            switch(this.roomType)
-            {
-                case 0:
-                    amount = 0;
-                    chance = 0;
-                    break;
-                case 1:
-                    amount = 1;
-                    chance = 60;
-                    break;
-                case 2:
-                    amount = 2;
-                    chance = 40;
-                    break;
-                case 3:
-                    amount = 3;
-                    chance = 60;
-                    break;
-                case 4:
-                    amount = 4;
-                    chance = 30;
-                    break;
-            }
-            // for each attempt at an item, uses the chance to attempt adding an item and adds it to the room Inventory.
-            for (int i = 1; i<= amount; i++)
-            {
-                // uses the item class method Generate item and passes it the chance of an item.
-                string tempItem = "none";
-                if (tempItem != "none")
-                {
-                    if (roomInventory.ContainsKey(tempItem))
-                    {
-                        roomInventory[tempItem]++;
-                    }
-                    else
-                    {
-                        roomInventory.Add(tempItem, 1);
-                    }
-                }
-            }
+
         }
         /// <summary>
         /// Sets the Rooms description based on the Room Type.

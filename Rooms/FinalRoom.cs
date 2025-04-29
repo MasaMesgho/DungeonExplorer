@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    internal class FinalRoom : Room
+    internal class FinalRoom : Room, ILootable
     {
         public FinalRoom(Directions EntryDirection, List<Directions> AvailableDirections, bool Visited)
         {

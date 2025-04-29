@@ -15,6 +15,7 @@ namespace DungeonExplorer
         // for encapsulation
         public Player player { get; private set; }
         public Room currentRoom { get; private set; }
+
         /// <summary>
         /// Initialises the main game loop.
         /// </summary>

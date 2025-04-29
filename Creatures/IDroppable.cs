@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    internal class Hall : Room, ILootable
+    internal interface IDroppable
     {
-        public Hall(Directions EntryDirection, List<Directions> AvailableDirections, bool Visited)
-        {
-
-        }
+        /// <summary>
+        /// Drops an item.
+        /// </summary>
+        /// <returns></returns>
+        Item Drops();
     }
 }

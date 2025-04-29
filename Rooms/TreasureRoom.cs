@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    internal class TreasureRoom : Room
+    internal class TreasureRoom : Room, ILootable
     {
         public TreasureRoom(Directions EntryDirection, List<Directions> AvailableDirections, bool Visited)
         {

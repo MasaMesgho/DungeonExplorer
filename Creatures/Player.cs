@@ -20,11 +20,11 @@ namespace DungeonExplorer
             name = playerName;
             maxHealth = 100;
             health = maxHealth;
-            resistance = 0;
+            Resistance = 0;
         }
 
         /// <summary>
-        /// Adds a item to the players inventory.
+        /// Adds a item to the players inventory.cd
         /// </summary>
         /// <param name="item">
         /// The Item to be added.
@@ -161,7 +161,7 @@ namespace DungeonExplorer
         }
         public override bool TakeDamage(int amount)
         {
-            health -= amount * ((100 - resistance) / 100);
+            health -= amount * ((100 - Resistance) / 100);
             if (health > 0)
             {
                 return true;
@@ -171,12 +171,13 @@ namespace DungeonExplorer
                 return false;
             }
         }
-        public override void Attack(Creature target)
+        public override bool Attack(Creature target)
         {
             if (!target.TakeDamage(Damage))
             {
-                Console.WriteLine($"Your vision fades, your journey ended by a {name}");
+                return true;
             }
+            return false;
         }
 
     }

@@ -6,14 +6,30 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    public class Goblin : Creature
+    /// <summary>
+    /// Goblin Enemy class
+    /// contains all the stats for a goblin
+    /// inherits from creature which inherits the IAttack and IDamageable interfaces
+    /// </summary>
+    public class Goblin : Creature, IDroppable
     {
+        private DropTable Droppable;
+
+        /// <summary>
+        /// Creates an instance of the goblin enemy
+        /// generates stats based  on the level provided
+        /// </summary>
+        /// <param name="level"> The enemy Level to be generated </param>
         public Goblin(int level) 
         {
-            resistance = 0;
+            // sets the resistance to 0 and sets the max health to 10 + 5 per level
+            // also sets the damage to 3 + level * 2
+            Resistance = 0;
             maxHealth = 10 + (level * 5);
             Damage = 3 + (level * 2);
             health = maxHealth;
+
+            Droppable = new DropTable(TableType.Enemy, level);
 
             if (level < 5)
             {
@@ -29,9 +45,14 @@ namespace DungeonExplorer
             }
         }
 
+        /// <summary>
+        /// takes damage from an attack.
+        /// </summary>
+        /// <param name="amount"> the amount of incoming damage </param>
+        /// <returns> a bool of if the enemy is dead </returns>
         public override bool TakeDamage(int amount)
         {
-            health -= amount*((100-resistance) / 100);
+            health -= amount*((100-Resistance) / 100);
             if (health > 0)
             {
                 return true;
@@ -41,12 +62,24 @@ namespace DungeonExplorer
                 return false;
             }
         }
-        public override void Attack(Creature target)
+
+        /// <summary>
+        /// Attacks a Target
+        /// </summary>
+        /// <param name="target"> The target being attacked </param>
+        public override bool Attack(Creature target)
         {
+            // calls the targets take damage method, with a if statement for if the damage is fatal.
             if (!target.TakeDamage(Damage))
             {
-                Console.WriteLine($"Your vision fades, your journey ended by a {name}");
+                return true;
             }
+            else return false;
+        }
+
+        public Item Drops()
+        {
+            return Droppable.GetDrop();
         }
 
     }

@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    internal class Dungeon : Room
+    internal class Dungeon : Room, ILootable
     {
         public Dungeon(Directions EntryDirection, List<Directions> AvailableDirections, bool Visited)
         {
 
+        }
+
+        public Item[] Loot()
+        {
+            return RoomInventory;
         }
     }
 }

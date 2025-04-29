@@ -8,13 +8,15 @@ namespace DungeonExplorer
 {
     public class Slime : Creature
     {
+        private DropTable Droppable;
         public Slime(int level)
         {
-            resistance = 8+(level*2);
-            if (resistance > 75) resistance = 75;
+            Resistance = 8+(level*2);
+            if (Resistance > 75) Resistance = 75;
             maxHealth = 10 + (level * 2);
             health = maxHealth;
             Damage = 3 + (level * 2);
+            Droppable = new DropTable(TableType.Enemy, level);
 
             if (level < 5)
             {
@@ -32,7 +34,7 @@ namespace DungeonExplorer
 
         public override bool TakeDamage(int amount)
         {
-            health -= amount * ((100 - resistance) / 100);
+            health -= amount * ((100 - Resistance) / 100);
             if (health > 0)
             {
                 return true;
@@ -43,12 +45,19 @@ namespace DungeonExplorer
             }
         }
 
-        public override void Attack(Creature target)
+        public override bool Attack(Creature target)
         {
             if (!target.TakeDamage(Damage))
             {
-                Console.WriteLine($"Your vision fades, your journey ended by a {name}");
+                return true;
             }
+            return false;
         }
+
+        public Item drops()
+        {
+            return Droppable.GetDrop();
+        }
+
     }
 }

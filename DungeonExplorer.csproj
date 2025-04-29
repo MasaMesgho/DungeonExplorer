@@ -47,6 +47,7 @@
     <Compile Include="Creatures\Goblin.cs" />
     <Compile Include="Creatures\IAttack.cs" />
     <Compile Include="Creatures\IDamageable.cs" />
+    <Compile Include="Creatures\IDroppable.cs" />
     <Compile Include="Creatures\Slime.cs" />
     <Compile Include="DropTable.cs" />
     <Compile Include="Game.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Rooms\FinalRoom.cs" />
     <Compile Include="Rooms\GameMap.cs" />
     <Compile Include="Rooms\Hall.cs" />
+    <Compile Include="Rooms\ILootable.cs" />
     <Compile Include="Rooms\Room.cs" />
     <Compile Include="Rooms\TreasureRoom.cs" />
     <Compile Include="Testing.cs" />
