@@ -93,25 +93,24 @@ namespace DungeonExplorer
         /// The Items in the rooms inventory if it has not been checked.
         /// Returns checked if it has already been checked.
         /// </returns>
-        public Dictionary<string,int> getItems(bool test = false)
+        public Item[] getItems(bool test = false)
         {
             //creates a temporary dictionary to return if the room has already been searched
-            Dictionary<string, int> temp = new Dictionary<string, int>();
+            Item[] temp;
 
             // if this is called as a test, just returns the rooms description
-            if (test) { return roomInventory; }
+            if (test) { return RoomInventory; }
             // if the room is searched, first check if the room has been searched already
             if (roomChecked)
             {
                 // adds a checked item to the dictionary which is then handled in the game class
-                temp.Add("checked", 0);
-                return temp;
+                return null;
             }
             
             // check the roomChecked variable so it can't be searched twice
             roomChecked = true;
             // return every item in the room (will return empty if the room has no items)
-            return roomInventory;
+            return RoomInventory;
         }
     }
 }

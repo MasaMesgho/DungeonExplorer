@@ -25,8 +25,7 @@ namespace DungeonExplorer
             name = "Sword";
             if (level > 1) name += " +" + (level - 1);
             damage = 5 + (level * 5);
-            description = $"A Level {level} sword, it makes enemies unhappy " +
-                          $"(does {damage} damage)";
+            description = $"A Level {level} sword, it makes enemies unhappy (does {damage} damage)";
             iD = Int32.Parse($"2{level}");
             itemType = ItemTypes.weapon;
         }
@@ -35,9 +34,9 @@ namespace DungeonExplorer
         /// equips the sword to the player
         /// </summary>
         /// <param name="player"> the player to equip the sword to </param>
-        public override void Use(Player player)
+        public override void Use(Player target)
         {
-            player.Equip(this);
+            target.Equip(this);
         }
     }
 }

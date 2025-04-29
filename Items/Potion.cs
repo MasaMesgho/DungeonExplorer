@@ -31,7 +31,7 @@ namespace DungeonExplorer
         /// <param name="player"> the current player </param>
         public override void Use(Player player)
         {
-            player.changeHealth(Restores);
+            player.gainHealth(Restores);
         }
 
     }

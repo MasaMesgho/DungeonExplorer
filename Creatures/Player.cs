@@ -9,10 +9,14 @@ namespace DungeonExplorer
     public class Player : Creature
     {
 
-        public Item weapon;
+        public Item Weapon;
 
-        // inventory is a array of items with a max size of 10
-        private Item[] inventory = new Item[10];
+        // inventory is a array of items
+        private List<Item> Inventory = new List<Item>();
+        public int InventorySize
+        {
+            get; private set;
+        }
 
         public Player(string playerName)
         {
@@ -24,43 +28,43 @@ namespace DungeonExplorer
         }
 
         /// <summary>
-        /// Adds a item to the players inventory.cd
-        /// </summary>
-        /// <param name="item">
-        /// The Item to be added.
-        /// </param>
-        public void PickUpItem(Item item)
-        {
-            // adds an item to the players inventory if it has a space for it.
-            if (inventory.Contains(null))
-            {
-                inventory.Append(item);
-            }
-        }
-
-        /// <summary>
-        /// Gets the players current Inventory as a string.
+        /// Gets the types of items in the players inventory.
         /// </summary>
         /// <returns>
-        /// The Inventory Contents
+        /// The types of items in the inventory
         /// </returns>
-        public string InventoryContents()
+        public List<ItemTypes> InventoryContents()
         {
             // returns the inventory contents.
             // first checks if the inventory is empty
-            string outputString = "";
-            bool empty = true;
-            foreach (Item item in inventory)
+            List<ItemTypes> items= new List<ItemTypes>();
+            bool hasItems = Inventory.Count() != 0;
+            // if the inventory has items in it
+            if (hasItems)
             {
-                if (item != null)
-                {
-                    empty = false;
-                    outputString += item.name + "\n";
-                }
+                bool hasPotions = this.Inventory.Exists(item => item.itemType == ItemTypes.potion);
+                bool hasEquip = Inventory.Exists(item => item.itemType == ItemTypes.weapon);
 
+                if (hasPotions) items.Add(ItemTypes.potion);
+                if (hasEquip) items.Add(ItemTypes.weapon);
             }
-            if (empty) outputString = "Your inventory is Empty...";
-            return outputString;
+            else items.Add(ItemTypes.None);
+            return items;
+        }
+
+        /// <summary>
+        /// Gets all the items of a given type in the players inventory
+        /// </summary>
+        /// <param name="type">the type of item to be returned </param>
+        /// <returns> a list of items of the requested type </returns>
+        public List<Item> InventoryContents(ItemTypes type)
+        {
+            // creates a emty item list
+            // then uses LINQ to fill it with the given type and then sort it.
+            List<Item> items = new List<Item>();
+            items = Inventory.Where(item => item.itemType == type).ToList();
+            items.OrderByDescending(item => item.iD).FirstOrDefault();
+            return items;
         }
 
         /// <summary>
@@ -72,13 +76,14 @@ namespace DungeonExplorer
         /// <returns>
         /// True if the item is there, false if not.
         /// </returns>
-        public bool checkInventory(int itemID)
+        public bool checkInventory(Item item)
         {
             // a method to see if an item is in the players inventory.
             // returns a bool
 
             // needs to be reworked after item rework
-            return false;
+            if (Inventory.Contains(item)) return true;
+            else return false;
         }
 
         /// <summary>
@@ -87,81 +92,76 @@ namespace DungeonExplorer
         /// <param name="itemName">
         /// The Item to be removed.
         /// </param>
-        public void removeItem(int itemID)
+        public void removeItem(Item item)
         {
             // removes an item from a players inventory
             // checks that the item is in the players inventory before removing it.
             // should only be called by something that knows the item is there, so if it isn't raises an exception.
-            bool errorCheck = false;
-            foreach (Item item in inventory)
-            {
-                if (item.iD == itemID) errorCheck = true;
-            }
-            Debug.Assert(errorCheck, "Remove item called when " +
-                "item not in inventory");
-            // either reduces the int variable that shows the ammount of the item by 1 or removes the item if only 1 is left.
-            if (errorCheck)
-            {
-                int i = 0;
-                bool removed = false;
-                foreach (Item item in inventory)
-                {
-                    if (!removed && item.iD == itemID) inventory[i] = null;
-                    i++;
-                }
-            }
+            bool errorCheck = Inventory.Contains(item);
+
+            Debug.Assert(errorCheck, "Remove item called when item not in inventory");
+
+            // if the item is in the inventory, removes it.
+            if (errorCheck) Inventory.Remove(item);
         }
 
-        public void Equip(Item equipment)
+        /// <summary>
+        /// Adds a item to the players inventory.
+        /// </summary>
+        /// <param name="item">
+        /// The Item to be added.
+        /// </param>
+        public void PickUpItem(Item item)
         {
-            if (checkInventory(equipment.iD))
+            // adds an item to the players inventory if it has a space for it.
+            if (Inventory.Contains(null))
             {
-                switch (equipment.itemType)
-                {
-                    case ItemTypes.weapon:
-                        weapon = equipment;
-                        break;
-                    default:
-                        break;
-
-                }
-            }
-            else 
-            {
-                
+                Inventory.Append(item);
             }
         }
 
         /// <summary>
-        /// adjusts the player health according to the input int
+        /// equips an item to the player
+        /// </summary>
+        /// <param name="equipment">the item being equipped </param>
+        public void Equip(Item equipment)
+        {
+            // uses a switch case for types of equipment
+            switch (equipment.itemType)
+            {
+                case ItemTypes.weapon:
+                    Weapon = equipment;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// increases the player health according to the input int
         /// </summary>
         /// <param name="change"></param>
         /// <returns>
         /// A bool that signifies if the player is alive after the change.
         /// </returns> 
-        public bool changeHealth(int change)
+        public void gainHealth(int change)
         {
-            // returns a bool for use in taking damage (not implemented) to check if it is fatal
-            // by default the return is true as the player should be alive before this is called
-            bool healthLeft = true;
-            // changes the players health
             Health += change;
-            if (Health <= 0)
-            {
-                // if the player has no health left, return false
-                healthLeft = false;
-            }
-            else if (Health > maxHealth)
-            {
-                // if the user got more health than they can have.
-                // set it to the max health value.
-                Health = maxHealth;
-            }
-            return healthLeft;
+
+            // if the user has gained health over their max, sets it to the max health
+            if (Health > maxHealth) Health = maxHealth;
         }
+
+        /// <summary>
+        /// reduces the players health by the given amount
+        /// </summary>
+        /// <param name="amount">the amount it is being reduced </param>
+        /// <returns> if the player has health left </returns>
         public override bool TakeDamage(int amount)
         {
+            // reduces the damage by the resistance value
             health -= amount * ((100 - Resistance) / 100);
+            // return if there is health left
             if (health > 0)
             {
                 return true;
@@ -171,8 +171,15 @@ namespace DungeonExplorer
                 return false;
             }
         }
+
+        /// <summary>
+        /// Attacks a given target
+        /// </summary>
+        /// <param name="target">the target being attacked </param>
+        /// <returns> if the attack has killed the target </returns>
         public override bool Attack(Creature target)
         {
+            // call the targets take damage, if it has health left return false, otherwise return true
             if (!target.TakeDamage(Damage))
             {
                 return true;

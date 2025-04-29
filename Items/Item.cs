@@ -15,7 +15,8 @@ namespace DungeonExplorer
     public enum ItemTypes
     {
         weapon,
-        potion
+        potion,
+        None
     }
     /// <summary>
     /// abstract class to be inherited by all items

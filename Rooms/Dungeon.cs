@@ -12,7 +12,10 @@ namespace DungeonExplorer
         {
 
         }
-
+        /// <summary>
+        /// Loots the room
+        /// </summary>
+        /// <returns> all items in the room </returns>
         public Item[] Loot()
         {
             return RoomInventory;
