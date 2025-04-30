@@ -107,11 +107,12 @@ namespace DungeonExplorer
                     Console.WriteLine("[3] Move");
                     break;
                 case MenuState.Move:
-                    Console.WriteLine("[0] Back");
+                    Console.WriteLine("[0] Previous menu");
                     Console.WriteLine("[1] Left");
                     Console.WriteLine("[2] Forward");
                     Console.WriteLine("[3] Right");
                     Console.WriteLine("[4] Down");
+                    Console.WriteLine("[5] Back");
                     break;
             }
 
@@ -138,15 +139,35 @@ namespace DungeonExplorer
                     if (input == '0') state = MenuState.None;
                     if (input == '1')
                     {
-
+                        if (currentRoom.Exits.Contains(ExitDirection.left)) currentRoom = map.Move(currentRoom.GetExitDirection(ExitDirection.left));
+                        else Console.WriteLine("there is no way left.");
+                        Console.WriteLine("Press any key to continue.");
+                        Console.ReadKey();
+                        state = MenuState.None;
                     }
                     if (input == '2')
                     {
-
+                        if (currentRoom.Exits.Contains(ExitDirection.forward)) currentRoom = map.Move(currentRoom.GetExitDirection(ExitDirection.forward));
+                        else Console.WriteLine("there is no way forwards.");
+                        Console.WriteLine("Press any key to continue.");
+                        Console.ReadKey();
+                        state = MenuState.None;
                     }
                     if (input == '3')
                     {
-
+                        if (currentRoom.Exits.Contains(ExitDirection.right)) currentRoom = map.Move(currentRoom.GetExitDirection(ExitDirection.right));
+                        else Console.WriteLine("there is no way right.");
+                        Console.WriteLine("Press any key to continue.");
+                        Console.ReadKey();
+                        state = MenuState.None;
+                    }
+                    if (input == '4')
+                    {
+                        if (currentRoom.Exits.Contains(ExitDirection.down)) currentRoom = map.NewFloor();
+                        else Console.WriteLine("there is no way down.");
+                        Console.WriteLine("Press any key to continue.");
+                        Console.ReadKey();
+                        state = MenuState.None;
                     }
                     break;
             }

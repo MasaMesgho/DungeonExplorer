@@ -148,7 +148,7 @@ namespace DungeonExplorer
             if (PlayerLocation[0] > 0 && RoomGrid[PlayerLocation[0] - 1][PlayerLocation[1]] != 0) availableDirections.Add(Directions.North);
             if (PlayerLocation[0] < 2 && RoomGrid[PlayerLocation[0] + 1][PlayerLocation[1]] != 0) availableDirections.Add(Directions.South);
             if (PlayerLocation[1] < 2 && RoomGrid[PlayerLocation[0]][PlayerLocation[1] + 1] != 0) availableDirections.Add(Directions.East);
-            if (PlayerLocation[2] > 0 && RoomGrid[PlayerLocation[0]][PlayerLocation[1] - 1] != 0) availableDirections.Add(Directions.West);
+            if (PlayerLocation[1] > 0 && RoomGrid[PlayerLocation[0]][PlayerLocation[1] - 1] != 0) availableDirections.Add(Directions.West);
             // sees if the user has been in this location before
             bool visitedCheck = (visited.Contains(PlayerLocation));
 
