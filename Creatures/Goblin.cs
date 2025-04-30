@@ -11,7 +11,7 @@ namespace DungeonExplorer
     /// contains all the stats for a goblin
     /// inherits from creature which inherits the IAttack and IDamageable interfaces
     /// </summary>
-    public class Goblin : Creature, IDroppable
+    public class Goblin : Creature
     {
         private DropTable Droppable;
 
@@ -53,7 +53,9 @@ namespace DungeonExplorer
         /// <returns> a bool of if the enemy is dead </returns>
         public override bool TakeDamage(int amount)
         {
-            health -= amount*((100-Resistance) / 100);
+            int calcAmount = amount * ((100 - Resistance) / 100);
+            Console.WriteLine("You Dealt {0} Damage!", calcAmount);
+            health -= calcAmount;
             if (health > 0)
             {
                 return true;
@@ -82,7 +84,7 @@ namespace DungeonExplorer
         /// potentially drops an item from the goblins loot-table
         /// </summary>
         /// <returns>an item or null </returns>
-        public Item Drops()
+        public override Item Drops()
         {
             return Droppable.GetDrop();
         }

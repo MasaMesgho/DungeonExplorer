@@ -25,6 +25,7 @@ namespace DungeonExplorer
             maxHealth = 100;
             health = maxHealth;
             Resistance = 0;
+            Damage = 5;
         }
 
         /// <summary>
@@ -130,7 +131,9 @@ namespace DungeonExplorer
             switch (equipment.itemType)
             {
                 case ItemTypes.weapon:
-                    Weapon = equipment;
+                    Sword temp = equipment as Sword;
+                    Weapon = temp;
+                    Damage = temp.damage;
                     break;
                 default:
                     break;
@@ -159,8 +162,9 @@ namespace DungeonExplorer
         /// <returns> if the player has health left </returns>
         public override bool TakeDamage(int amount)
         {
-            // reduces the damage by the resistance value
-            health -= amount * ((100 - Resistance) / 100);
+            int calcAmount = amount * ((100 - Resistance) / 100);
+            Console.WriteLine("You took {0} Damage!", calcAmount);
+            health -= calcAmount;
             // return if there is health left
             if (health > 0)
             {

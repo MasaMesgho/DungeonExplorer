@@ -10,7 +10,7 @@ namespace DungeonExplorer
     /// Abstract Class to be inherited by player and enemies
     /// uses interfaces IDamageable and IAttack
     /// </summary>
-    public abstract class Creature : IDamageable, IAttack
+    public abstract class Creature : IDamageable, IAttack, IDroppable
     {
         // variables shared among all creatures are here
         // health is protected for use only within the child classes for set, but can be seen by other classes using a public get
@@ -50,5 +50,9 @@ namespace DungeonExplorer
         public abstract bool TakeDamage(int amount);
 
         public abstract bool Attack(Creature target);
+
+        // here for requirements
+        public virtual Item Drops()
+        { return null; }
     }
 }

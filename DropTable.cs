@@ -68,7 +68,7 @@ namespace DungeonExplorer
         {
             // Uses rnd class to generate a random number between 0 and 9
             // uses the result to generate a random item and returns it.
-            int result = Program.rnd.Next(0, 9);
+            int result = Program.rnd.Next(0, 3);
             // returns an item or null if no item is generated
             switch (result)
             {

@@ -33,8 +33,8 @@ namespace DungeonExplorer
 
         private bool waiting;
 
-        private List<Item> items;
-        private List<ItemTypes> itemTypes;
+        private List<Item> items = new List<Item>();
+        private List<ItemTypes> itemTypes = new List<ItemTypes>();
 
         private MenuState state = MenuState.None;
 
@@ -63,14 +63,14 @@ namespace DungeonExplorer
             while (GameRunning)
             {
                 Console.Clear();
-                Console.WriteLine("Player: {0}      Floor: {1}", player.name, map.floor);
+                Console.WriteLine("Player: {0}[{1}/{2}]      Floor: {1}", player.name, player.health, player.maxHealth, map.floor);
                 // First gets and writes the description of the room
                 Console.WriteLine(currentRoom.description);
                 // outputs any message from the last action.
                 // then resets the console message
                 Console.Write(consoleMessage);
                 consoleMessage = "";
-                // then if the menu is on move, tells the user the amount of paths.
+                // then if the menu is on move, tells the user the amount of paths they can choose.
                 if (state == MenuState.Move)
                 {
                     switch (currentRoom.Exits.Count)
@@ -90,6 +90,8 @@ namespace DungeonExplorer
                             break;
                     }
                 }
+
+                // if there are enemies, set the menu to combat if it is not in the inventory and display the enemies names+health
                 if (enemyList.Count > 0)
                 {
                     if (state == MenuState.None) state = MenuState.Combat;
@@ -125,6 +127,8 @@ namespace DungeonExplorer
         private void Menu()
         {
             int i;
+            // shows the user the commands they can take
+            // switches based on menu state
             switch (state)
             {
                 case MenuState.None:
@@ -170,10 +174,26 @@ namespace DungeonExplorer
                 // sets intInput to -1 for errorhandling
                 intInput = -1;
             }
+            // handles the users input
+            // switches based on menu state
             switch (state)
             {
                 case MenuState.None:
-                    if (input == '0') GameOver();
+                    if (intInput == 0)
+                    {
+                        while (true)
+                        {
+                            Console.Clear();
+                            Console.Write("Are you sure you want to exit? (y/n)");
+                            char exitCheck = Console.ReadKey().KeyChar;
+                            if (exitCheck == 'y')
+                            {
+                                GameOver("");
+                                break;
+                            }
+                            if (exitCheck == 'n') break;
+                        }
+                    }
                     if (input == '1')
                     {
                         if (player.InventorySize != 0)
@@ -214,14 +234,63 @@ namespace DungeonExplorer
                     }
 
                     break;
+                case MenuState.Combat:
+                    if (intInput == 0)
+                    {
+                        while (true)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Are you sure you want to exit? (y/n)");
+                            char exitCheck = Console.ReadKey().KeyChar;
+                            if (exitCheck == 'y')
+                            {
+                                GameOver("");
+                                break;
+                            }
+                            if (exitCheck == 'n') break;
+                        }
+                    }
+                    if (input == '1')
+                    {
+                        if (player.InventorySize != 0)
+                        {
+                            itemTypes.AddRange(player.InventoryContents());
+                            state = MenuState.Inventory;
+                        }
+                        else consoleMessage = "You have no items in your inventory";
+                    }
+                    if(intInput > 1 && intInput-1 <= enemyList.Count)
+                    {
+                        if (player.Attack(enemyList[intInput-2]))
+                        {
+                            currentRoom.AddItem(enemyList[intInput-2].Drops());
+                            enemyList.RemoveAt(intInput - 2);
+                            if (enemyList.Count == 0) state = MenuState.None;
+                        }
+                        if (enemyList.Count > 0)
+                        {
+                            foreach (Creature enemy in enemyList)
+                            {
+                                if (enemy.Attack(player)) GameOver($"You were slain by a {enemy.name}");
+                            }
+                        }
+                        else
+                        {
+                            Console.Write("Press any key to continue...");
+                            Console.ReadKey();
+                        }
+                    }
+
+                    break;
             }
 
         }
 
-        public void GameOver()
+        public void GameOver(string message)
         {
-            GameRunning = false;
             Console.Clear();
+            Console.WriteLine(message);
+            GameRunning = false;
         }
     }
 }

@@ -46,7 +46,9 @@ namespace DungeonExplorer
         /// <returns> a bool of if the enemy is dead </returns>
         public override bool TakeDamage(int amount)
         {
-            health -= amount * ((100 - Resistance) / 100);
+            int calcAmount = amount * ((100 - Resistance) / 100);
+            Console.WriteLine("You Dealt {0} Damage!", calcAmount);
+            health -= calcAmount;
             if (health > 0)
             {
                 return true;
@@ -74,7 +76,7 @@ namespace DungeonExplorer
         /// potentially drops an item from the goblins loot-table
         /// </summary>
         /// <returns>an item or null </returns>
-        public Item drops()
+        public override Item Drops()
         {
             return Droppable.GetDrop();
         }
