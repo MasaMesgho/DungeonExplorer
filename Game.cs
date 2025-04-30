@@ -67,7 +67,7 @@ namespace DungeonExplorer
             while (GameRunning)
             {
                 Console.Clear();
-                Console.WriteLine("Player: {0}[{1}/{2}]      Floor: {1}", player.name, player.health, player.maxHealth, map.floor);
+                Console.WriteLine("Player: {0}[{1}/{2}]      Floor: {3}", player.name, player.health, player.maxHealth, map.floor);
                 // First gets and writes the description of the room
                 Console.WriteLine(currentRoom.description);
                 // outputs any message from the last action.
@@ -366,7 +366,7 @@ namespace DungeonExplorer
                     break;
                 case MenuState.Inventory:
                     if (input == '0') state = MenuState.None;
-                    if (intInput <= itemTypes.Count)
+                    if (intInput > 0 &&intInput <= itemTypes.Count)
                     {
                         items = player.InventoryContents(itemTypes[intInput - 1]);
                         state = MenuState.DetailedInventory;
@@ -375,11 +375,6 @@ namespace DungeonExplorer
                     break;
                 case MenuState.DetailedInventory:
                     if (input == '0') state = MenuState.Inventory;
-                    if (intInput <= items.Count)
-                    {
-                        item = items[intInput - 1];
-                        state = MenuState.Item;
-                    }
                     if (items.Count > 7)
                     {
                         i = 1;
@@ -394,13 +389,15 @@ namespace DungeonExplorer
                         }
                         item = items[intInput-i];
                         state = MenuState.Item;
+                        consoleMessage = item.description;
                     }
                     else
                     {
-                        if (intInput <= items.Count)
+                        if (intInput > 0 && intInput <= items.Count)
                         {
                             item = items[intInput - 1];
                             state = MenuState.Item;
+                            consoleMessage = item.description;
                         }
                     }
                     break;
