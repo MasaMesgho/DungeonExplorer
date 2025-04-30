@@ -390,6 +390,7 @@ namespace DungeonExplorer
                         if (page > 0)
                         {
                             i++;
+                            i += page * 7;
                         }
                         item = items[intInput-i];
                         state = MenuState.Item;
