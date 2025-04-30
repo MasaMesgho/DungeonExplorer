@@ -9,8 +9,11 @@ namespace DungeonExplorer
 {
     public class Game
     {
+        // bool that determines if the game is running
         private bool GameRunning;
-
+        /// <summary>
+        /// handles menu state switching
+        /// </summary>
         private enum MenuState
         {
             None,
@@ -21,9 +24,8 @@ namespace DungeonExplorer
             Item,
             Move
         }
+        // variables used within the game class are determined here
 
-        // has public get for testing purposes and private set so it can only be changed by the game class
-        // for encapsulation
         private Player player;
 
         private Room currentRoom;
@@ -32,16 +34,16 @@ namespace DungeonExplorer
 
         private List<Creature> enemyList = new List<Creature>();
 
-        private bool waiting;
-
-        private List<Item> items = new List<Item>();
+        // Variables for use in inventory interactions
+        private List<Item> items = new List<Item>(); 
         private Item item;
         private List<ItemTypes> itemTypes = new List<ItemTypes>();
-
         private int page;
 
+        // stores the menu state, none is default.
         private MenuState state = MenuState.None;
 
+        // for relaying messages to the player between screen clears.
         private string consoleMessage = "";
 
         /// <summary>
@@ -49,7 +51,7 @@ namespace DungeonExplorer
         /// </summary>
         public Game()
         {
-            // Initialize the game with one room and one player after getting their name
+            // Initialize the game with a map, one room and one player after getting their name
             currentRoom = map.NewFloor();
             Console.Write("Please Enter your name: ");
             string name = Console.ReadLine();
@@ -123,14 +125,8 @@ namespace DungeonExplorer
         }
 
         /// <summary>
-        /// Determines the type of action and calls the relevant methods.
+        /// Handles menu interactions and display.
         /// </summary>
-        /// <param name="userInput">
-        /// The users input.
-        /// </param>
-        /// <returns>
-        /// If a move action has been taken or if the user wants to exit.
-        /// </returns>
         private void Menu()
         {
             int i;
