@@ -24,5 +24,9 @@ namespace DungeonExplorer
             AddExits(AvailableDirections);
             EmptyRoom = Visited;
         }
+        public override List<Creature> EnemyEncounter()
+        {
+            return new List<Creature>();
+        }
     }
 }

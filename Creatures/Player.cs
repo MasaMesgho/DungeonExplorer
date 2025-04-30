@@ -112,12 +112,17 @@ namespace DungeonExplorer
         /// <param name="item">
         /// The Item to be added.
         /// </param>
-        public void PickUpItem(Item item)
+        public bool PickUpItem(Item item)
         {
             // adds an item to the players inventory if it has a space for it.
-            if (Inventory.Contains(null))
+            if (Inventory.Count <= 20)
             {
-                Inventory.Append(item);
+                Inventory.Add(item);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -162,8 +167,9 @@ namespace DungeonExplorer
         /// <returns> if the player has health left </returns>
         public override bool TakeDamage(int amount)
         {
-            int calcAmount = amount * ((100 - Resistance) / 100);
-            Console.WriteLine("You took {0} Damage!", calcAmount);
+            double resisted = (Convert.ToDouble(Resistance) / 100) * Convert.ToDouble(amount);
+            int calcAmount = (int)(amount - resisted);
+            Console.WriteLine("You took {0} damage!", calcAmount);
             health -= calcAmount;
             // return if there is health left
             if (health > 0)

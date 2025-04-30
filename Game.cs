@@ -150,6 +150,8 @@ namespace DungeonExplorer
                 case MenuState.Combat:
                     Console.WriteLine("[0] Exit");
                     Console.WriteLine("[1] Inventory");
+
+                    // shows the commands to attack each creature in the enemy list
                     i = 0;
                     foreach(Creature enemy in enemyList)
                     {
@@ -159,9 +161,19 @@ namespace DungeonExplorer
                         i++;
                     }
                     break;
+                case MenuState.Search:
+                    Console.WriteLine("[0] Back");
+                    i = 1;
+                    foreach (Item item in currentRoom.roomInventory)
+                    {
+                        Console.WriteLine("[{0}] Pick Up {1}", i, item.name);
+                    }
+                    break;
+
             }
 
             char input = Console.ReadKey().KeyChar;
+
             // try to convert the input to a int.
             // using try loop to avoid crashes
             int intInput;
@@ -174,6 +186,7 @@ namespace DungeonExplorer
                 // sets intInput to -1 for errorhandling
                 intInput = -1;
             }
+
             // handles the users input
             // switches based on menu state
             switch (state)
@@ -224,7 +237,7 @@ namespace DungeonExplorer
                         currentRoom = map.Move(currentRoom.GetExitDirection(currentRoom.Exits[intInput - 1]));
                         state = MenuState.None;
                         enemyList = currentRoom.EnemyEncounter();
-                        if (enemyList != null) consoleMessage = "Enemies have appeared!\n";
+                        if (enemyList.Count != 0) consoleMessage = "Enemies have appeared!\n";
                     }
                     else if (intInput == currentRoom.Exits.Count + 1)
                     {
@@ -264,6 +277,7 @@ namespace DungeonExplorer
                         if (player.Attack(enemyList[intInput-2]))
                         {
                             currentRoom.AddItem(enemyList[intInput-2].Drops());
+                            consoleMessage = $"You have Slain the {enemyList[intInput - 2].name}!\n";
                             enemyList.RemoveAt(intInput - 2);
                             if (enemyList.Count == 0) state = MenuState.None;
                         }
@@ -271,16 +285,22 @@ namespace DungeonExplorer
                         {
                             foreach (Creature enemy in enemyList)
                             {
-                                if (enemy.Attack(player)) GameOver($"You were slain by a {enemy.name}");
+                                if (enemy.Attack(player)) GameOver($"You were slain by a {enemy.name}\n");
                             }
                         }
-                        else
-                        {
-                            Console.Write("Press any key to continue...");
-                            Console.ReadKey();
-                        }
+                        Console.Write("Press any key to continue...");
+                        Console.ReadKey();
                     }
 
+                    break;
+                case MenuState.Search:
+                    if (input == '1') state = MenuState.None;
+                    else if (intInput <= currentRoom.roomInventory.Count)
+                    {
+                        player.PickUpItem(currentRoom.roomInventory[intInput - 1]);
+                        currentRoom.roomInventory.RemoveAt(intInput - 1);
+                        if (currentRoom.roomInventory.Count == 0) state = MenuState.None;
+                    }
                     break;
             }
 

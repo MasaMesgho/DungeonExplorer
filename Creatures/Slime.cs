@@ -24,7 +24,7 @@ namespace DungeonExplorer
             // creates a droptable instance for the slime
             Droppable = new DropTable(TableType.Enemy, level);
 
-            // changes the slimes name based on level to make it seem like there are different types
+            // changes the Slimes name based on level to make it seem like there are different types
             if (level < 5)
             {
                 name = "Slime";
@@ -46,8 +46,9 @@ namespace DungeonExplorer
         /// <returns> a bool of if the enemy is dead </returns>
         public override bool TakeDamage(int amount)
         {
-            int calcAmount = amount * ((100 - Resistance) / 100);
-            Console.WriteLine("You Dealt {0} Damage!", calcAmount);
+            double resisted = (Convert.ToDouble(Resistance) / 100)*Convert.ToDouble(amount);
+            int calcAmount = (int)(amount-resisted);
+            Console.WriteLine("You dealt {0} damage!", calcAmount);
             health -= calcAmount;
             if (health > 0)
             {

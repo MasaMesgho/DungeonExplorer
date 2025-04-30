@@ -18,7 +18,6 @@ namespace DungeonExplorer
         static void Main(string[] args)
         {
             // starts the game loop
-            Testing.TestMap();
             Game game = new Game();
             game.Start();
             Console.WriteLine("See you Space Cowboy...");

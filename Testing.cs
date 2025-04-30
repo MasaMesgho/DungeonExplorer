@@ -27,5 +27,13 @@ namespace DungeonExplorer
             Console.ReadLine();
         }
 
+        public static void TestCombat()
+        {
+            Creature enemy = new Slime(10);
+            Player player = new Player("test");
+            player.Attack(enemy);
+        }
+
+
     }
 }
