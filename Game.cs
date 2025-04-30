@@ -176,8 +176,12 @@ namespace DungeonExplorer
                     if (input == '0') GameOver();
                     if (input == '1')
                     {
-                        itemTypes.AddRange(player.InventoryContents());
-                        state = MenuState.Inventory;
+                        if (player.InventorySize != 0)
+                        {
+                            itemTypes.AddRange(player.InventoryContents());
+                            state = MenuState.Inventory;
+                        }
+                        else consoleMessage = "You have no items in your inventory";
                     }
                     if (input == '2')
                     {
@@ -200,6 +204,7 @@ namespace DungeonExplorer
                         currentRoom = map.Move(currentRoom.GetExitDirection(currentRoom.Exits[intInput - 1]));
                         state = MenuState.None;
                         enemyList = currentRoom.EnemyEncounter();
+                        if (enemyList != null) consoleMessage = "Enemies have appeared!\n";
                     }
                     else if (intInput == currentRoom.Exits.Count + 1)
                     {
