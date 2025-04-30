@@ -23,13 +23,17 @@ namespace DungeonExplorer
         /// </summary>
         private void TestMap()
         {
+            // test map and room generation
             GameMap map = new GameMap();
             Room testRoom = map.NewFloor();
             Debug.Assert(map.roomGrid != null, "RoomGrid not generated");
             Debug.Assert(testRoom != null, "Room not generated");
+
+            // makes sure the floor and starting room are correct
             Debug.Assert(map.floor == 1, "Incorrect Floor");
             Debug.Assert(testRoom.type == RoomType.Entry, "Starting room incorrect type");
 
+            // makes sure the correct amount of rooms are generated
             int roomCheck = 0;
             foreach (int[] row in map.roomGrid)
             {

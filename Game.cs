@@ -55,7 +55,17 @@ namespace DungeonExplorer
             currentRoom = map.NewFloor();
             Console.Write("Please Enter your name: ");
             string name = Console.ReadLine();
+
+            // if the user selects "test" as a name, runs the test class
+            if (name.ToLower() == "test")
+            {
+                // call the test and then remove the object after testing is complete.
+                Testing test = new Testing();
+                test = null;
+            }
+
             player = new Player(name);
+
         }
 
         /// <summary>
@@ -225,7 +235,7 @@ namespace DungeonExplorer
                         int x = page * 7;
                         int max = x+7;
                         // loops through items while there is room left on the page, and there are still items to add.
-                        while (x <= max && x<=items.Count)
+                        while (x <= max && x<=items.Count-1)
                         {
                             Console.WriteLine("[{0}] {1}", i, items[x].name);
                             i++;
