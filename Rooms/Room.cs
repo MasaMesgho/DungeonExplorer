@@ -12,7 +12,8 @@ namespace DungeonExplorer
         dungeon,
         hall,
         treasure,
-        final
+        final,
+        Entry
     }
 
     public enum ExitDirection

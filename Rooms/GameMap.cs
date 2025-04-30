@@ -67,6 +67,7 @@ namespace DungeonExplorer
             Floor = Floor + 1;
             Rooms.Clear();
             visited.Clear();
+            RoomGrid.Clear();
             GenerateRooms();
             CreateConnections();
             // sets the player location the the starting room

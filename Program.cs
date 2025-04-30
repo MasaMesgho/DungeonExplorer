@@ -21,7 +21,7 @@ namespace DungeonExplorer
             Testing.TestMap();
             Game game = new Game();
             game.Start();
-            Console.WriteLine("See you next time Space Cowboy...");
+            Console.WriteLine("See you Space Cowboy...");
             Console.Write("Press any key to close.");
             Console.ReadKey();
         }

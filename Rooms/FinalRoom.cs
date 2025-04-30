@@ -18,8 +18,8 @@ namespace DungeonExplorer
         {
             description = "An ancient staircase lies in front of you, leading further down.";
             EntryDirection = EntryDir;
-            AvailableDirections.Add(Directions.Down);
             AddExits(AvailableDirections);
+            Exits.Add(ExitDirection.down);
             dropTable = new DropTable(TableType.Room, floor+1);
             EmptyRoom = Visited;
             if (!EmptyRoom) GenerateItems(3);

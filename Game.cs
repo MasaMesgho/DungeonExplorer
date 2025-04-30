@@ -36,6 +36,8 @@ namespace DungeonExplorer
 
         private MenuState state = MenuState.None;
 
+        private string consoleMessage = "";
+
         /// <summary>
         /// Initialises the main game loop.
         /// </summary>
@@ -61,24 +63,30 @@ namespace DungeonExplorer
                 Console.Clear();
                 // First gets and writes the description of the room
                 Console.WriteLine(currentRoom.description);
-                switch (currentRoom.Exits.Count)
+                // outputs any message from the last action.
+                // then resets the console message
+                Console.Write(consoleMessage);
+                consoleMessage = "";
+                // then if the menu is on move, tells the user the amount of paths.
+                if (state == MenuState.Move)
                 {
-                    case 0:
-                        Console.WriteLine("There are no exits here, you have to turn back");
-                        break;
-                    case 1:
-                        Console.Write("You see a lone door ");
-                        break;
-                    case 2:
-                    case 3:
-                    case 4:
-                        Console.Write("You see doors ");
-                        break;
+                    switch (currentRoom.Exits.Count)
+                    {
+                        case 1:
+                            if (currentRoom.Exits.Contains(ExitDirection.None)) Console.Write("There are no doors, you must turn back.");
+                            else Console.WriteLine("You see a path ahead");
+                            break;
+                        case 2:
+                            Console.WriteLine("You see two paths ahead");
+                            break;
+                        case 3:
+                            Console.WriteLine("You see three ahead:");
+                            break;
+                        case 4:
+                            Console.WriteLine("You see four ahead:");
+                            break;
+                    }
                 }
-                if (currentRoom.Exits.Contains(ExitDirection.left)) Console.Write("Left ");
-                if (currentRoom.Exits.Contains(ExitDirection.forward)) Console.Write("Ahead ");
-                if (currentRoom.Exits.Contains(ExitDirection.right)) Console.Write("Right ");
-                if (currentRoom.Exits.Count > 0) Console.WriteLine();
                 Console.WriteLine();
 
                 Menu();
@@ -108,11 +116,15 @@ namespace DungeonExplorer
                     break;
                 case MenuState.Move:
                     Console.WriteLine("[0] Previous menu");
-                    Console.WriteLine("[1] Left");
-                    Console.WriteLine("[2] Forward");
-                    Console.WriteLine("[3] Right");
-                    Console.WriteLine("[4] Down");
-                    Console.WriteLine("[5] Back");
+                    int i = 1;
+                    foreach (ExitDirection exit in currentRoom.Exits)
+                    {
+                        Console.WriteLine("[{0}] {1}", i, exit);
+                        i++;
+                    }
+                    Console.WriteLine("[{0}] Back", i);
+                    break;
+                case MenuState.Combat:
                     break;
             }
 
@@ -136,39 +148,18 @@ namespace DungeonExplorer
                     }
                     break;
                 case MenuState.Move:
-                    if (input == '0') state = MenuState.None;
-                    if (input == '1')
+                    int intInput = Int32.Parse(input.ToString());
+                    if (intInput == 0) state = MenuState.None;
+                    else if ((intInput) <= currentRoom.Exits.Count)
                     {
-                        if (currentRoom.Exits.Contains(ExitDirection.left)) currentRoom = map.Move(currentRoom.GetExitDirection(ExitDirection.left));
-                        else Console.WriteLine("there is no way left.");
-                        Console.WriteLine("Press any key to continue.");
-                        Console.ReadKey();
-                        state = MenuState.None;
+                        currentRoom = map.Move(currentRoom.GetExitDirection(currentRoom.Exits[intInput - 1]));
                     }
-                    if (input == '2')
+                    else if (intInput == currentRoom.Exits.Count + 1)
                     {
-                        if (currentRoom.Exits.Contains(ExitDirection.forward)) currentRoom = map.Move(currentRoom.GetExitDirection(ExitDirection.forward));
-                        else Console.WriteLine("there is no way forwards.");
-                        Console.WriteLine("Press any key to continue.");
-                        Console.ReadKey();
-                        state = MenuState.None;
+                        if (currentRoom.type == RoomType.Entry && currentRoom.EntryDirection == Directions.North) consoleMessage = "You cannot go back.\n";
+                        else currentRoom = map.Move(currentRoom.EntryDirection);
                     }
-                    if (input == '3')
-                    {
-                        if (currentRoom.Exits.Contains(ExitDirection.right)) currentRoom = map.Move(currentRoom.GetExitDirection(ExitDirection.right));
-                        else Console.WriteLine("there is no way right.");
-                        Console.WriteLine("Press any key to continue.");
-                        Console.ReadKey();
-                        state = MenuState.None;
-                    }
-                    if (input == '4')
-                    {
-                        if (currentRoom.Exits.Contains(ExitDirection.down)) currentRoom = map.NewFloor();
-                        else Console.WriteLine("there is no way down.");
-                        Console.WriteLine("Press any key to continue.");
-                        Console.ReadKey();
-                        state = MenuState.None;
-                    }
+
                     break;
             }
 
