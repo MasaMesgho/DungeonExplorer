@@ -80,7 +80,7 @@ namespace DungeonExplorer
         /// <param name="item"> the item being added </param>
         public void AddItem(Item item)
         {
-            roomInventory.Add(item);
+            if (item!=null) roomInventory.Add(item);
         }
         /// <summary>
         /// removes an item from the rooms inventory

@@ -18,6 +18,7 @@ namespace DungeonExplorer
             DetailedInventory,
             Combat,
             Search,
+            Item,
             Move
         }
 
@@ -34,6 +35,7 @@ namespace DungeonExplorer
         private bool waiting;
 
         private List<Item> items = new List<Item>();
+        private Item item;
         private List<ItemTypes> itemTypes = new List<ItemTypes>();
 
         private MenuState state = MenuState.None;
@@ -167,7 +169,25 @@ namespace DungeonExplorer
                     foreach (Item item in currentRoom.roomInventory)
                     {
                         Console.WriteLine("[{0}] Pick Up {1}", i, item.name);
+                        i++;
                     }
+                    break;
+                case MenuState.Inventory:
+                    Console.WriteLine("[0] Back");
+                    i = 1;
+                    foreach (ItemTypes type in itemTypes)
+                    {
+                        Console.WriteLine("[{0}] {1}", i, type);
+                        i++;
+                    }
+                    break;
+                case MenuState.DetailedInventory:
+                    Console.WriteLine("[0] Back");
+                    break;
+                case MenuState.Item:
+                    Console.WriteLine("[0] Back");
+                    Console.WriteLine("[1] Use");
+                    Console.WriteLine("[2] Discard");
                     break;
 
             }
@@ -267,7 +287,7 @@ namespace DungeonExplorer
                     {
                         if (player.InventorySize != 0)
                         {
-                            itemTypes.AddRange(player.InventoryContents());
+                            itemTypes = player.InventoryContents();
                             state = MenuState.Inventory;
                         }
                         else consoleMessage = "You have no items in your inventory";
@@ -294,12 +314,49 @@ namespace DungeonExplorer
 
                     break;
                 case MenuState.Search:
-                    if (input == '1') state = MenuState.None;
+                    if (input == '0') state = MenuState.None;
                     else if (intInput <= currentRoom.roomInventory.Count)
                     {
-                        player.PickUpItem(currentRoom.roomInventory[intInput - 1]);
-                        currentRoom.roomInventory.RemoveAt(intInput - 1);
+                        Item temp = currentRoom.roomInventory[intInput - 1];
+                        if (player.PickUpItem(temp))
+                        {
+                            currentRoom.RemoveItem(temp);
+                        }
+                        else
+                        {
+                            consoleMessage = "You have too many items in your inventory\ntry using or discarding an item.";
+                        }
                         if (currentRoom.roomInventory.Count == 0) state = MenuState.None;
+                    }
+                    break;
+                case MenuState.Inventory:
+                    if (input == '0') state = MenuState.None;
+                    if (intInput <= itemTypes.Count)
+                    {
+                        items = player.InventoryContents(itemTypes[intInput - 1]);
+                        state = MenuState.DetailedInventory;
+                    }
+                    break;
+                case MenuState.DetailedInventory:
+                    if (input == '0') state = MenuState.Inventory;
+                    if (intInput <= items.Count)
+                    {
+                        item = items[intInput - 1];
+                        state = MenuState.Item;
+                    }
+                    break;
+                case MenuState.Item:
+                    if (input == '0') state = MenuState.DetailedInventory;
+                    if (input == '1')
+                    {
+                        state = MenuState.None;
+                        item.Use(player);
+                        player.removeItem(item);
+                    }
+                    if (input == '2')
+                    {
+                        state = MenuState.None;
+                        player.removeItem(item);
                     }
                     break;
             }

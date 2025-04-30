@@ -103,7 +103,11 @@ namespace DungeonExplorer
             Debug.Assert(errorCheck, "Remove item called when item not in inventory");
 
             // if the item is in the inventory, removes it.
-            if (errorCheck) Inventory.Remove(item);
+            if (errorCheck)
+            {
+                Inventory.Remove(item);
+                InventorySize--;
+            }
         }
 
         /// <summary>
@@ -118,6 +122,7 @@ namespace DungeonExplorer
             if (Inventory.Count <= 20)
             {
                 Inventory.Add(item);
+                InventorySize++;
                 return true;
             }
             else
