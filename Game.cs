@@ -38,6 +38,8 @@ namespace DungeonExplorer
         private Item item;
         private List<ItemTypes> itemTypes = new List<ItemTypes>();
 
+        private int page;
+
         private MenuState state = MenuState.None;
 
         private string consoleMessage = "";
@@ -183,6 +185,38 @@ namespace DungeonExplorer
                     break;
                 case MenuState.DetailedInventory:
                     Console.WriteLine("[0] Back");
+                    i = 1;
+                    if (items.Count > 7)
+                    {
+                        Console.WriteLine("[0] Back");
+                        if (items.Count > 7+page*7)
+                        {
+                            Console.WriteLine("[1] Next Page");
+                            i++;
+                        }
+                        if (page > 0)
+                        {
+                            Console.WriteLine("[2] previous Page");
+                            i++;
+                        }
+                        int x = page * 7;
+                        int max = page * 7 + 7;
+                        while (x <= max)
+                        {
+                            Console.WriteLine("[{0}] {1}", i, items[x].name);
+                            i++;
+                            x++;
+                        }
+                    }
+                    else
+                    {
+                        i = 1;
+                        foreach (Item temp in items)
+                        {
+                            Console.WriteLine("[{0}] {1}", i, temp.name);
+                            i++;
+                        }
+                    }
                     break;
                 case MenuState.Item:
                     Console.WriteLine("[0] Back");
@@ -321,6 +355,7 @@ namespace DungeonExplorer
                         if (player.PickUpItem(temp))
                         {
                             currentRoom.RemoveItem(temp);
+                            consoleMessage = "you picked up the " + temp.name;
                         }
                         else
                         {
@@ -335,6 +370,7 @@ namespace DungeonExplorer
                     {
                         items = player.InventoryContents(itemTypes[intInput - 1]);
                         state = MenuState.DetailedInventory;
+                        page = 0;
                     }
                     break;
                 case MenuState.DetailedInventory:
@@ -344,8 +380,31 @@ namespace DungeonExplorer
                         item = items[intInput - 1];
                         state = MenuState.Item;
                     }
+                    if (items.Count > 7)
+                    {
+                        i = 1;
+                        if (items.Count > 7 + page * 7)
+                        {
+                            i++;
+                        }
+                        if (page > 0)
+                        {
+                            i++;
+                        }
+                        item = items[intInput-i];
+                        state = MenuState.Item;
+                    }
+                    else
+                    {
+                        if (intInput <= items.Count)
+                        {
+                            item = items[intInput - 1];
+                            state = MenuState.Item;
+                        }
+                    }
                     break;
                 case MenuState.Item:
+                    page = 0;
                     if (input == '0') state = MenuState.DetailedInventory;
                     if (input == '1')
                     {
