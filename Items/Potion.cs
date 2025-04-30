@@ -19,6 +19,7 @@ namespace DungeonExplorer
         {
             name = "Health Potion";
             // if the health potion is better than the basic (level 1) shows how advanced it is.
+            // has scalable stats and name/description
             if (level > 1) name += "+ " + (level - 1);
             iD = Int32.Parse($"1{level}");
             Restores = 10 + level*5;

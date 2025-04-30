@@ -23,6 +23,7 @@ namespace DungeonExplorer
         public Sword(int level)
         {
             name = "Sword";
+            // gives scalable name and stats
             if (level > 1) name += " +" + (level - 1);
             damage = 5 + (level * 5);
             description = $"A Level {level} sword, it makes enemies unhappy (does {damage} damage)";

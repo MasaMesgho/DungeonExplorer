@@ -16,6 +16,7 @@ namespace DungeonExplorer
         Entry
     }
 
+    // stores the exit directions
     public enum ExitDirection
     {
         left,

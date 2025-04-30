@@ -53,10 +53,10 @@ namespace DungeonExplorer
         /// <returns> a bool of if the enemy is dead </returns>
         public override bool TakeDamage(int amount)
         {
-            double resisted = (Convert.ToDouble(Resistance) / 100) * Convert.ToDouble(amount);
-            int calcAmount = (int)(amount - resisted);
-            Console.WriteLine("You dealt {0} damage!", calcAmount);
-            health -= calcAmount;
+            // removes the damage from the goblins health
+            Console.WriteLine("You dealt {0} damage!", amount);
+            health -= amount;
+            // checks if the creature is still alive
             if (health > 0)
             {
                 return true;

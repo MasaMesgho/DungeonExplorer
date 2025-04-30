@@ -43,9 +43,10 @@ namespace DungeonExplorer
             // if the inventory has items in it
             if (hasItems)
             {
+                // uses LINQ to check for the existance of item types
                 bool hasPotions = this.Inventory.Exists(item => item.itemType == ItemTypes.potion);
                 bool hasEquip = Inventory.Exists(item => item.itemType == ItemTypes.weapon);
-
+                // adds the found types to a list and returns it
                 if (hasPotions) items.Add(ItemTypes.potion);
                 if (hasEquip) items.Add(ItemTypes.weapon);
             }
