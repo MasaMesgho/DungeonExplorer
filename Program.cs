@@ -17,6 +17,9 @@ namespace DungeonExplorer
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            // call the test and then remove the object after testing is complete.
+            Testing test = new Testing();
+            test = null;
             // starts the game loop
             Game game = new Game();
             game.Start();

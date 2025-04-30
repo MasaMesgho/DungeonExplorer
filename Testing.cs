@@ -13,8 +13,13 @@ namespace DungeonExplorer
         public Testing()
         {
             TestMap();
+            Console.WriteLine("Map Test Complete.");
             TestCombat();
+            Console.WriteLine("Combat Test Complete.");
             TestItems();
+            Console.WriteLine("Item Test Complete.");
+            Console.Write("Press any Key to Continue...");
+            Console.ReadKey();
             Console.Clear();
         }
 

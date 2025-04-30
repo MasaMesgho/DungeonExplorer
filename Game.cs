@@ -56,14 +56,6 @@ namespace DungeonExplorer
             Console.Write("Please Enter your name: ");
             string name = Console.ReadLine();
 
-            // if the user selects "test" as a name, runs the test class
-            if (name.ToLower() == "test")
-            {
-                // call the test and then remove the object after testing is complete.
-                Testing test = new Testing();
-                test = null;
-            }
-
             player = new Player(name);
 
         }
