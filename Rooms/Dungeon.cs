@@ -17,6 +17,7 @@ namespace DungeonExplorer
         public Dungeon(Directions EntryDir, List<Directions> AvailableDirections, bool Visited, int floor)
         {
             description = "A Dark Dungeon, old traces of prisoners, long gone remain.";
+            Floor = floor;
             EntryDirection = EntryDir;
             AddExits(AvailableDirections);
             dropTable = new DropTable(TableType.Room, floor);

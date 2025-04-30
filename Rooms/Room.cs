@@ -33,6 +33,8 @@ namespace DungeonExplorer
         protected string Description;
         public string description;
 
+        protected int Floor;
+
         public List<ExitDirection> Exits { get; protected set; } = new List<ExitDirection>();
 
         protected RoomType Type;
@@ -87,6 +89,19 @@ namespace DungeonExplorer
         public void RemoveItem(Item item)
         {
             roomInventory.Remove(item);
+        }
+
+        public virtual List<Creature> EnemyEncounter()
+        {
+            int chance  = Program.rnd.Next(0, 2);
+            int enemyNumber = Program.rnd.Next(0,4);
+            List<Creature> creatures = new List<Creature>();
+            for (int i = 0; i < enemyNumber; i++)
+            {
+                if (chance <= 1) creatures.Add(new Goblin(Floor));
+                else creatures.Add(new Slime(Floor));
+            }
+            return creatures;
         }
 
         /// <summary>

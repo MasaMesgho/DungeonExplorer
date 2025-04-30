@@ -18,7 +18,8 @@ namespace DungeonExplorer
         {
             if (!Visited) description = "A new floor with new dangers lurking inside.";
             else description = "A familiar room, you started your exploration of this floor here";
-                type = RoomType.Entry;
+            Floor = floor;
+            type = RoomType.Entry;
             EntryDirection = EntryDir;
             AddExits(AvailableDirections);
             EmptyRoom = Visited;

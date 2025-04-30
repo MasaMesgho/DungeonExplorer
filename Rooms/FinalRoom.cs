@@ -17,6 +17,7 @@ namespace DungeonExplorer
         public FinalRoom(Directions EntryDir, List<Directions> AvailableDirections, bool Visited, int floor)
         {
             description = "An ancient staircase lies in front of you, leading further down.";
+            Floor = floor;
             EntryDirection = EntryDir;
             AddExits(AvailableDirections);
             Exits.Add(ExitDirection.down);
