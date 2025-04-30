@@ -265,7 +265,7 @@ namespace DungeonExplorer
                     {
                         if (player.InventorySize != 0)
                         {
-                            itemTypes.AddRange(player.InventoryContents());
+                            itemTypes = player.InventoryContents();
                             state = MenuState.Inventory;
                         }
                         else consoleMessage = "You have no items in your inventory";
