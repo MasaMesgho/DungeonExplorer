@@ -15,7 +15,9 @@ namespace DungeonExplorer
         {
             None,
             Inventory,
+            DetailedInventory,
             Combat,
+            Search,
             Move
         }
 
@@ -27,7 +29,7 @@ namespace DungeonExplorer
 
         private GameMap map = new GameMap();
 
-        private List<Creature> enemyList;
+        private List<Creature> enemyList = new List<Creature>();
 
         private bool waiting;
 
@@ -61,6 +63,7 @@ namespace DungeonExplorer
             while (GameRunning)
             {
                 Console.Clear();
+                Console.WriteLine("Player: {0}      Floor: {1}", player.name, map.floor);
                 // First gets and writes the description of the room
                 Console.WriteLine(currentRoom.description);
                 // outputs any message from the last action.
@@ -87,6 +90,22 @@ namespace DungeonExplorer
                             break;
                     }
                 }
+                if (enemyList.Count > 0)
+                {
+                    if (state == MenuState.None) state = MenuState.Combat;
+                    string enemyNames = "";
+                    string enemyHP = "";
+                    int i = 0;
+                    foreach (Creature enemy in enemyList)
+                    {
+                        if (i > 0) enemyNames += enemy.name + " ("+i+")   ";
+                        else enemyNames += enemy.name + "   ";
+                        enemyHP += "[" + enemy.health + "/" + enemy.maxHealth + "]  ";
+                        i++;
+                    }
+                    Console.WriteLine(enemyNames);
+                    Console.WriteLine(enemyHP);
+                }
                 Console.WriteLine();
 
                 Menu();
@@ -105,7 +124,7 @@ namespace DungeonExplorer
         /// </returns>
         private void Menu()
         {
-
+            int i;
             switch (state)
             {
                 case MenuState.None:
@@ -116,7 +135,7 @@ namespace DungeonExplorer
                     break;
                 case MenuState.Move:
                     Console.WriteLine("[0] Previous menu");
-                    int i = 1;
+                    i = 1;
                     foreach (ExitDirection exit in currentRoom.Exits)
                     {
                         Console.WriteLine("[{0}] {1}", i, exit);
@@ -125,10 +144,32 @@ namespace DungeonExplorer
                     Console.WriteLine("[{0}] Back", i);
                     break;
                 case MenuState.Combat:
+                    Console.WriteLine("[0] Exit");
+                    Console.WriteLine("[1] Inventory");
+                    i = 0;
+                    foreach(Creature enemy in enemyList)
+                    {
+                        Console.Write("[{0}] Attack: {1}", i + 2, enemyList[i].name);
+                        if (i > 0) Console.Write("({0})", i);
+                        Console.WriteLine();
+                        i++;
+                    }
                     break;
             }
 
             char input = Console.ReadKey().KeyChar;
+            // try to convert the input to a int.
+            // using try loop to avoid crashes
+            int intInput;
+            try 
+            {
+                intInput = Int32.Parse(input.ToString());
+            }
+            catch
+            {
+                // sets intInput to -1 for errorhandling
+                intInput = -1;
+            }
             switch (state)
             {
                 case MenuState.None:
@@ -140,7 +181,12 @@ namespace DungeonExplorer
                     }
                     if (input == '2')
                     {
-
+                        if (currentRoom.roomInventory.Count > 0)
+                        {
+                            state = MenuState.Search;
+                            items.AddRange(currentRoom.roomInventory);
+                        }
+                        else consoleMessage = "The Room is empty";
                     }
                     if (input == '3')
                     {
@@ -148,16 +194,18 @@ namespace DungeonExplorer
                     }
                     break;
                 case MenuState.Move:
-                    int intInput = Int32.Parse(input.ToString());
                     if (intInput == 0) state = MenuState.None;
-                    else if ((intInput) <= currentRoom.Exits.Count)
+                    else if (intInput <= currentRoom.Exits.Count && intInput != -1)
                     {
                         currentRoom = map.Move(currentRoom.GetExitDirection(currentRoom.Exits[intInput - 1]));
+                        state = MenuState.None;
+                        enemyList = currentRoom.EnemyEncounter();
                     }
                     else if (intInput == currentRoom.Exits.Count + 1)
                     {
                         if (currentRoom.type == RoomType.Entry && currentRoom.EntryDirection == Directions.North) consoleMessage = "You cannot go back.\n";
                         else currentRoom = map.Move(currentRoom.EntryDirection);
+                        state = MenuState.None;
                     }
 
                     break;

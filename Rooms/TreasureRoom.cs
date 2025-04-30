@@ -16,7 +16,8 @@ namespace DungeonExplorer
         /// <param name="Visited">if the room has been visited</param>
         public TreasureRoom(Directions EntryDir, List<Directions> AvailableDirections, bool Visited, int floor)
         {
-            description = "A Dark Dungeon, old traces of prisoners, long gone remain.";
+            if (!Visited) description = "A Room full of Decaying chest and treasure, there may be something left.";
+            else description = "An Empty Treasure hall, nothing is left.";
             Floor = floor;
             EntryDirection = EntryDir;
             AddExits(AvailableDirections);

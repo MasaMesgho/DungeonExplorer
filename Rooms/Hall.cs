@@ -16,7 +16,8 @@ namespace DungeonExplorer
         /// <param name="Visited">if the room has been visited</param>
         public Hall(Directions EntryDir, List<Directions> AvailableDirections, bool Visited, int floor)
         {
-            description = "A Dark Dungeon, old traces of prisoners, long gone remain.";
+            if (!Visited) description = "An old Hall, decaying furniture fills the room, there may be something of use.";
+            else description = "An Empty old Hall, nothing of value remains.";
             Floor = floor;
             EntryDirection = EntryDir;
             AddExits(AvailableDirections);

@@ -160,15 +160,15 @@ namespace DungeonExplorer
             switch (newRoom)
             {
                 case 1:
-                    return new EntryRoom(entryDirection, availableDirections, visitedCheck, floor);
+                    return new EntryRoom(entryDirection, availableDirections, !visitedCheck, floor);
                 case 2:
-                    return new Hall(entryDirection, availableDirections, visitedCheck, floor);
+                    return new Hall(entryDirection, availableDirections, !visitedCheck, floor);
                 case 3:
-                    return new Dungeon(entryDirection, availableDirections, visitedCheck, floor);
+                    return new Dungeon(entryDirection, availableDirections, !visitedCheck, floor);
                 case 4:
-                    return new TreasureRoom(entryDirection, availableDirections, visitedCheck, floor);
+                    return new TreasureRoom(entryDirection, availableDirections, !visitedCheck, floor);
                 case 5:
-                    return new FinalRoom(entryDirection, availableDirections, visitedCheck, floor);
+                    return new FinalRoom(entryDirection, availableDirections, !visitedCheck, floor);
                 default:
                     return default;
             }

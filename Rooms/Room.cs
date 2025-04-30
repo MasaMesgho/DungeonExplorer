@@ -48,7 +48,7 @@ namespace DungeonExplorer
 
         // room inventory can be gotten from outside the class
         // so has a protected set and a public get
-        protected List<Item> RoomInventory;
+        protected List<Item> RoomInventory = new List<Item>();
         public List<Item> roomInventory
         { 
             get { return RoomInventory; }
@@ -91,14 +91,20 @@ namespace DungeonExplorer
             roomInventory.Remove(item);
         }
 
+        /// <summary>
+        /// generates enemies based on room level.
+        /// virtual so can be overwritten for final and entry
+        /// </summary>
+        /// <returns> a list of enemies </returns>
         public virtual List<Creature> EnemyEncounter()
         {
             int chance  = Program.rnd.Next(0, 2);
             int enemyNumber = Program.rnd.Next(0,4);
             List<Creature> creatures = new List<Creature>();
+            if (EmptyRoom) return creatures;
             for (int i = 0; i < enemyNumber; i++)
             {
-                if (chance <= 1) creatures.Add(new Goblin(Floor));
+                if (chance == 1) creatures.Add(new Goblin(Floor));
                 else creatures.Add(new Slime(Floor));
             }
             return creatures;
