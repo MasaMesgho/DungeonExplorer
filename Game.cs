@@ -40,6 +40,8 @@ namespace DungeonExplorer
         private List<ItemTypes> itemTypes = new List<ItemTypes>();
         private int page;
 
+        private Statistics statistics = new Statistics();
+
         // stores the menu state, none is default.
         private MenuState state = MenuState.None;
 
@@ -53,6 +55,7 @@ namespace DungeonExplorer
         {
             // Initialize the game with a map, one room and one player after getting their name
             currentRoom = map.NewFloor();
+            statistics.roomsVisited++;
             Console.Write("Please Enter your name: ");
             string name = Console.ReadLine();
 
@@ -143,6 +146,7 @@ namespace DungeonExplorer
                     Console.WriteLine("[1] Inventory");
                     Console.WriteLine("[2] Search");
                     Console.WriteLine("[3] Move");
+                    Console.WriteLine("[4] Statistics");
                     break;
 
                 // if it is the move menu, shows available paths for the user to take
@@ -327,6 +331,12 @@ namespace DungeonExplorer
                         state = MenuState.Move;
                     }
                     break;
+                    // if the user chose stats, loads them into the console message
+                    if (input == '3')
+                    {
+                        consoleMessage = statistics.GetStats();
+                    }
+                    break;
 
                 // if the player is in the move menu
                 case MenuState.Move:
@@ -343,6 +353,10 @@ namespace DungeonExplorer
                         enemyList = currentRoom.EnemyEncounter();
                         // if enemies are encountered, sets a console message that lets the player know.
                         if (enemyList.Count != 0) consoleMessage = "Enemies have appeared!\n";
+
+                        // if this room is new, adds it to the statistics.
+                        if (!currentRoom.EmptyRoom) statistics.roomsVisited++;
+
                     }
                     // if the user chose the previous room option
                     else if (intInput == currentRoom.Exits.Count + 1)
@@ -398,6 +412,10 @@ namespace DungeonExplorer
                             currentRoom.AddItem(enemyList[intInput-2].Drops());
                             consoleMessage = $"You have Slain the {enemyList[intInput - 2].name}!\n";
                             enemyList.RemoveAt(intInput - 2);
+
+                            // adds 1 to the enemies slain statistic.
+                            statistics.enemiesSlain++;
+
                             // if there are no enemies left, reset the menu to default.
                             if (enemyList.Count == 0) state = MenuState.None;
                         }

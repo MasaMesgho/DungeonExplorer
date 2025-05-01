@@ -65,6 +65,7 @@
     <Compile Include="Rooms\Hall.cs" />
     <Compile Include="Rooms\Room.cs" />
     <Compile Include="Rooms\TreasureRoom.cs" />
+    <Compile Include="Statistics.cs" />
     <Compile Include="Testing.cs" />
   </ItemGroup>
   <ItemGroup>
