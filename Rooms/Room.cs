@@ -6,158 +6,187 @@ using System.Diagnostics;
 
 namespace DungeonExplorer
 {
-    public class Room
+    // stores room types for use outside of functions
+    public enum RoomType
     {
+        dungeon,
+        hall,
+        treasure,
+        final,
+        Entry
+    }
+
+    // stores the exit directions
+    public enum ExitDirection
+    {
+        left,
+        right,
+        forward,
+        down,
+        None
+    }
+
+    public abstract class Room
+    {
+
         // this class contains all information and actions for rooms
         // needed variables are below with a rng generator (rnd)
-        private string description;
-        private int roomType;
-        private Dictionary<string,int> roomInventory = new Dictionary<string, int>();
-        private Random rnd = new Random();
-        private bool roomChecked;
-        /// <summary>
-        /// Generates the Room with random attributes if not specified.
-        /// </summary>
-        /// <param name="roomType">
-        /// The Type of room if specifying, leave blank if not specifying.
-        /// </param>
-        public Room(int tempRoomType = -1)
-        {
-            // initializes the room
-            // generates a random room ID if one is not specified
-            if (tempRoomType == -1) { roomType = rnd.Next(1, 4); }
-            // uses the set description and set item methods
-            // makes sutre the room type is in range.
-            Debug.Assert(roomType < 5 && roomType >= 0, "Room Type out of range.");
-            setDescription();
-            setItems();
-            // sets this room to not have been searched.
-            this.roomChecked = false;
+        protected string Description;
+        public string description;
 
-        }
-        /// <summary>
-        /// Adds Items to the Rooms Inventory.
-        /// </summary>
-        private void setItems()
+        protected int Floor;
+
+        public List<ExitDirection> Exits { get; protected set; } = new List<ExitDirection>();
+
+        protected RoomType Type;
+        public RoomType type
         {
-            // Checks the room ID then assigns an item chance, and the amount of tries to get items.
-            int amount = 0;
-            int chance = 0;
-            switch(this.roomType)
+            get { return Type; }
+            protected set { Type = value; }
+        }
+
+        public Directions EntryDirection { get; protected set; }
+
+        // room inventory can be gotten from outside the class
+        // so has a protected set and a public get
+        protected List<Item> RoomInventory = new List<Item>();
+        public List<Item> roomInventory
+        { 
+            get { return RoomInventory; }
+            protected set { RoomInventory = value; }
+        }
+        protected DropTable dropTable;
+
+        public bool EmptyRoom { get; protected set; }
+
+        public Room() { }
+
+        /// <summary>
+        /// fills the room with items from the drop table
+        /// </summary>
+        /// <param name="amount">the amount of chances for a drop </param>
+        protected void GenerateItems(int amount)
+        {
+            // tries for an item for each amount given
+            for (int i = 0; i < amount; i++)
             {
-                case 0:
-                    amount = 0;
-                    chance = 0;
-                    break;
-                case 1:
-                    amount = 1;
-                    chance = 60;
-                    break;
-                case 2:
-                    amount = 2;
-                    chance = 40;
-                    break;
-                case 3:
-                    amount = 3;
-                    chance = 60;
-                    break;
-                case 4:
-                    amount = 4;
-                    chance = 30;
-                    break;
-            }
-            // for each attempt at an item, uses the chance to attempt adding an item and adds it to the room Inventory.
-            for (int i = 1; i<= amount; i++)
-            {
-                // uses the item class method Generate item and passes it the chance of an item.
-                string tempItem = Item.GenerateItem(chance);
-                if (tempItem != "none")
-                {
-                    if (roomInventory.ContainsKey(tempItem))
-                    {
-                        roomInventory[tempItem]++;
-                    }
-                    else
-                    {
-                        roomInventory.Add(tempItem, 1);
-                    }
-                }
+                // gets a drop from the table, if it is an item, adds it to the inventory
+                Item item = dropTable.GetDrop();
+                if (item != null) RoomInventory.Add(item);
             }
         }
         /// <summary>
-        /// Sets the Rooms description based on the Room Type.
+        /// adds a item to the rooms inventory
         /// </summary>
-        private void setDescription()
+        /// <param name="item"> the item being added </param>
+        public void AddItem(Item item)
         {
-            // gets the room ID and assigns the correct description based on the room entered.
-            switch (this.roomType)
-            {
-                case 0:
-                    this.description = "You arrive at the great Entryway to the dungeon" +
-                        "\nloose stone and crubling pillars fill you with Anxiety, but the allure of Treasure draws you in" +
-                        "\njust inside you see three passages, left, right and forwards, which will you choose?";
-                    break;
-                case 1:
-                    this.description = "A great Hall, " +
-                        "filled with forgotten crumbling pillars, " +
-                        "three Doorways lead deeper in, left, right and forwards";
-                    break;
-                case 2:
-                    this.description = "A crumbling graveyard, " +
-                        "littered with broken caskets, " +
-                        "three Doorways lead deeper in, left, right and forwards";
-                    break;
-                case 3:
-                    this.description = "A abandoned tight fitting corridor, " +
-                        "crumbling stone walls mark the years passed in this forgotten place, " +
-                        "three Doorways lead deeper in, left, right and forwards";
-                    break;
-                case 4:
-                    this.description = "A silent dining room, " +
-                        "rotting tables and scattered cutlery the only signs of time you can see, " +
-                        "three Doorways lead deeper in, left, right and forwards";
-                    break;
-
-
-            }
+            if (item!=null) roomInventory.Add(item);
         }
         /// <summary>
-        /// Gets the current description of the room.
+        /// removes an item from the rooms inventory
         /// </summary>
-        /// <returns>
-        /// The Rooms description in string
-        /// </returns>
-        public string getDescription()
+        /// <param name="item"> the item being removed </param>
+        public void RemoveItem(Item item)
         {
-            // if the description is requested, sends the description.
-            return this.description;
+            roomInventory.Remove(item);
         }
-        /// <summary>
-        /// Gets the Items in the rooms inventory if the room has not been checked.
-        /// </summary>
-        /// <returns>
-        /// The Items in the rooms inventory if it has not been checked.
-        /// Returns checked if it has already been checked.
-        /// </returns>
-        public Dictionary<string,int> getItems(bool test = false)
-        {
-            //creates a temporary dictionary to return if the room has already been searched
-            Dictionary<string, int> temp = new Dictionary<string, int>();
 
-            // if this is called as a test, just returns the rooms description
-            if (test) { return roomInventory; }
-            // if the room is searched, first check if the room has been searched already
-            if (roomChecked)
+        /// <summary>
+        /// generates enemies based on room level.
+        /// virtual so can be overwritten for final and entry
+        /// </summary>
+        /// <returns> a list of enemies </returns>
+        public virtual List<Creature> EnemyEncounter()
+        {
+            int chance  = Program.rnd.Next(0, 2);
+            int enemyNumber = Program.rnd.Next(0,4);
+            List<Creature> creatures = new List<Creature>();
+            if (EmptyRoom) return creatures;
+            for (int i = 0; i < enemyNumber; i++)
             {
-                // adds a checked item to the dictionary which is then handled in the game class
-                temp.Add("checked", 0);
-                return temp;
+                if (chance == 1) creatures.Add(new Goblin(Floor));
+                else creatures.Add(new Slime(Floor));
             }
-            
-            // check the roomChecked variable so it can't be searched twice
-            roomChecked = true;
-            // return every item in the room (will return empty if the room has no items)
-            return roomInventory;
+            return creatures;
         }
+
+        /// <summary>
+        /// adds the exits to a room
+        /// </summary>
+        /// <param name="entryDirection"> the entry direction</param>
+        /// <param name="availableDirections"> the available directions from the room </param>
+        protected void AddExits(List<Directions> availableDirections)
+        {
+            // uses the entry direction as a reference point
+            // adds the exits based on available directions from the entry direction
+            switch (EntryDirection)
+            {
+                case Directions.North:
+                    if (availableDirections.Contains(Directions.East)) Exits.Add(ExitDirection.left);
+                    if (availableDirections.Contains(Directions.South)) Exits.Add(ExitDirection.forward);
+                    if (availableDirections.Contains(Directions.West)) Exits.Add(ExitDirection.right);
+                    break;
+                case Directions.South:
+                    if (availableDirections.Contains(Directions.West)) Exits.Add(ExitDirection.left);
+                    if (availableDirections.Contains(Directions.North)) Exits.Add(ExitDirection.forward);
+                    if (availableDirections.Contains(Directions.East)) Exits.Add(ExitDirection.right);
+                    break;
+                case Directions.East:
+                    if (availableDirections.Contains(Directions.South)) Exits.Add(ExitDirection.left);
+                    if (availableDirections.Contains(Directions.West)) Exits.Add(ExitDirection.forward);
+                    if (availableDirections.Contains(Directions.North)) Exits.Add(ExitDirection.right);
+                    break;
+                case Directions.West:
+                    if (availableDirections.Contains(Directions.North)) Exits.Add(ExitDirection.left);
+                    if (availableDirections.Contains(Directions.East)) Exits.Add(ExitDirection.forward);
+                    if (availableDirections.Contains(Directions.South)) Exits.Add(ExitDirection.right);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// finds the exit direction from the given directions
+        /// </summary>
+        /// <param name="entryDirection"> the entry direction</param>
+        /// <param name="availableDirections"> the available directions from the room </param>
+        public Directions GetExitDirection(ExitDirection exit)
+        {
+            // uses default so that it can be returned
+            Directions direction = default;
+
+            // based on the entry direction, converts the exit chosen to a direction
+            switch (EntryDirection)
+            {
+                case Directions.North:
+                    if (exit == ExitDirection.left) direction = Directions.East;
+                    if (exit == ExitDirection.forward) direction = Directions.South;
+                    if (exit == ExitDirection.right) direction = Directions.West;
+                    break;
+                case Directions.South:
+                    if (exit == ExitDirection.left) direction = Directions.West;
+                    if (exit == ExitDirection.forward) direction = Directions.North;
+                    if (exit == ExitDirection.right) direction = Directions.East;
+                    break;
+                case Directions.East:
+                    if (exit == ExitDirection.left) direction = Directions.South;
+                    if (exit == ExitDirection.forward) direction = Directions.West;
+                    if (exit == ExitDirection.right) direction = Directions.North;
+                    break;
+                case Directions.West:
+                    if (exit == ExitDirection.left) direction = Directions.North;
+                    if (exit == ExitDirection.forward) direction = Directions.East;
+                    if (exit == ExitDirection.right) direction = Directions.South;
+                    break;
+                default:
+                    break;
+            }
+            if (exit == ExitDirection.down) direction = Directions.Down;
+
+            return direction;
+        }
+
     }
 }

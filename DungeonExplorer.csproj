@@ -43,16 +43,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Creatures\Creature.cs" />
+    <Compile Include="Creatures\Goblin.cs" />
+    <Compile Include="Creatures\IAttack.cs" />
+    <Compile Include="Creatures\IDamageable.cs" />
+    <Compile Include="Creatures\IDroppable.cs" />
+    <Compile Include="Creatures\Slime.cs" />
+    <Compile Include="DropTable.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Items\Items.cs" />
+    <Compile Include="Items\Item.cs" />
     <Compile Include="Creatures\Player.cs" />
+    <Compile Include="Items\IUsable.cs" />
+    <Compile Include="Items\Potion.cs" />
+    <Compile Include="Items\Sword.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rooms\Dungeon.cs" />
+    <Compile Include="Rooms\EntryRoom.cs" />
+    <Compile Include="Rooms\FinalRoom.cs" />
+    <Compile Include="Rooms\GameMap.cs" />
+    <Compile Include="Rooms\Hall.cs" />
     <Compile Include="Rooms\Room.cs" />
+    <Compile Include="Rooms\TreasureRoom.cs" />
+    <Compile Include="Statistics.cs" />
     <Compile Include="Testing.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
