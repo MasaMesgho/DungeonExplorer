@@ -330,7 +330,6 @@ namespace DungeonExplorer
                     {
                         state = MenuState.Move;
                     }
-                    break;
                     // if the user chose stats, loads them into the console message
                     if (input == '4')
                     {
