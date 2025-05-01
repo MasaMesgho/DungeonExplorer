@@ -23,7 +23,7 @@ namespace DungeonExplorer
     /// </summary>
     public abstract class Item : IUsable
     {
-        // all items will need an ID, Name and Description
+        // all items will need an ID, Type, Name and Description
         // these are all protected values as I do not want them changed outside of the class
         // they have a public version so that I can retrieve the values outside of the class
 

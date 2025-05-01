@@ -65,7 +65,7 @@ namespace DungeonExplorer
         /// fills the room with items from the drop table
         /// </summary>
         /// <param name="amount">the amount of chances for a drop </param>
-        public void GenerateItems(int amount)
+        protected void GenerateItems(int amount)
         {
             // tries for an item for each amount given
             for (int i = 0; i < amount; i++)
@@ -116,7 +116,7 @@ namespace DungeonExplorer
         /// </summary>
         /// <param name="entryDirection"> the entry direction</param>
         /// <param name="availableDirections"> the available directions from the room </param>
-        public void AddExits(List<Directions> availableDirections)
+        protected void AddExits(List<Directions> availableDirections)
         {
             // uses the entry direction as a reference point
             // adds the exits based on available directions from the entry direction
@@ -145,7 +145,6 @@ namespace DungeonExplorer
                 default:
                     break;
             }
-            if (Exits.Count == 0) Exits.Add(ExitDirection.None);
         }
 
         /// <summary>
