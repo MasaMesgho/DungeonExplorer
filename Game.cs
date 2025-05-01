@@ -332,7 +332,7 @@ namespace DungeonExplorer
                     }
                     break;
                     // if the user chose stats, loads them into the console message
-                    if (input == '3')
+                    if (input == '4')
                     {
                         consoleMessage = statistics.GetStats();
                     }
